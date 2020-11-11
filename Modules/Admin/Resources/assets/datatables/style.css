@@ -1,0 +1,10 @@
+/* Small color fixing */
+table.dataTable tbody>tr.selected, table.dataTable tbody>tr>.selected {
+    background-color: #343a40;
+}
+
+table.dataTable tbody>tr.selected .btn, table.dataTable tbody>tr>.selected .btn {
+    color: inherit;
+}
+
+
