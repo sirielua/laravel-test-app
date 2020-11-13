@@ -1,7 +1,7 @@
 <form method="POST" action="{{ $route }}" enctype="multipart/form-data">
     @method($method)
     @csrf
-    
+
     @if ($errors->any())
         <div class="alert alert-danger mb-4">
             <ul class="mb-1">
@@ -11,7 +11,7 @@
             </ul>
         </div>
     @endif
-    
+
     <div class="position-relative row form-group">
         <label for="email" class="col-sm-2 col-form-label">Email</label>
         <div class="col-sm-10">
@@ -36,11 +36,11 @@
             @enderror
         </div>
     </div>
-    
+
     <div class="position-relative row form-group">
         <label for="photo_file" class="col-sm-2 col-form-label">Photo</label>
         <div class="col-sm-10">
-            <input name="photo" value="{{ $model->photo ?? '' }}" type="text" class="form-control" />            
+            <input name="photo" value="{{ $model->photo ?? '' }}" type="text" class="form-control" />
             <input name="photo_file" id="photo_file" type="file" class="form-control-file @error('photo_file') is-invalid @enderror" />
             <small class="form-text text-muted">Only .jpeg, .jpg , .png, .gif files allowed</small>
             @error('photo')
@@ -55,6 +55,16 @@
             @enderror
         </div>
     </div>
+
+    <hr />
+
+    <fieldset class="position-relative row form-group">
+        <legend class="col-form-label col-sm-2">User status</legend>
+        <div class="col-sm-10">
+            <div class="position-relative form-check"><label class="form-check-label"><input name="is_active" value="1" type="radio" class="form-check-input" {{ old('is_active', $model->is_active) == 1 ? 'checked' : '' }}> Active user</label></div>
+            <div class="position-relative form-check"><label class="form-check-label"><input name="is_active" value="0" type="radio" class="form-check-input" {{ old('is_active', $model->is_active) == 0 ? 'checked' : '' }}> Inactive user</label></div>
+        </div>
+    </fieldset>
 
     <hr />
 
@@ -82,7 +92,7 @@
     </div>
 
     <hr />
-    
+
     {{--<div class="position-relative row form-group">
         <label for="description" class="col-sm-2 col-form-label">Description</label>
         <div class="col-sm-10">
@@ -98,5 +108,5 @@
 </form>
 
 {{--@push('scripts')
-    
+
 @endpush--}}

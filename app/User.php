@@ -16,16 +16,16 @@ class User extends Authenticatable
      * @var array
      */
     protected $attributes = [
-//        'active' => true,
+        'is_active' => true,
     ];
-    
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'photo',
+        'name', 'email', 'password', 'is_active', 'photo',
     ];
 
     /**
@@ -45,15 +45,15 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    
+
     /**
      * Scope a query to only include active users.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-//    public function scopeActive($query)
-//    {
-//        return $query->where('active', 1);
-//    }
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', 1);
+    }
 }

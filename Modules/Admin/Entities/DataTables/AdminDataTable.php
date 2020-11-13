@@ -1,39 +1,39 @@
 <?php
 
 /**
- * 
+ *
  * Controller implementation:
- * 
+ *
  * Single action version:
- * 
+ *
  * public function index(UsersDataTable $dataTable)
  * {
  *      return $dataTable->render('users.index');
  * }
- * 
+ *
  * or if you want separate action for ajax request:
- * 
+ *
  * public function index(Request $request, UsersDataTable $dataTable)
  * {
  *      return view('admin::users.index', ['dataTable' => $dataTable->html()]);
  * }
- * 
+ *
  * public function grid(Request $request, UsersDataTable $dataTable)
  * {
  *      $isAjax = $request->ajax() && $request->wantsJson();
  *      return $isAjax ? $dataTable->ajax() : abort(403);
  * }
- * 
+ *
  * then you need to render your datatable html:
- * 
+ *
  * {{ $dataTable->table($attributes = [], $drawFooter = false, $drawSearch = true) }}
- * 
+ *
  * and add automatically generated javascript needed for table to operate
  * @push('scripts')
  *      {{ $dataTable->scripts() }}
  * @endpush
- * 
- * 
+ *
+ *
  * return $dataTable->render('users.index');
  */
 namespace Modules\Admin\Entities\DataTables;
@@ -49,34 +49,34 @@ use Illuminate\Database\Eloquent\Model;
 abstract class AdminDataTable extends DataTable
 {
     protected $tableId = 'admin-data-table';
-    
+
     protected $checkboxColName = 'selected';
-    
+
     protected $actionsColName = 'actions';
-    
+
     protected $pageLength = 25;
-    
+
     abstract protected function getAjaxUrl();
-    
+
     /**
      * Get query source of dataTable.
      *
      * Example realization:
-     * 
+     *
      * public function query()
      * {
      *     return app()->make(User::class)->newQuery();
      * }
-     * 
+     *
      * @return mixed
      */
     abstract public function query();
-    
+
     /**
      * Build DataTable class.
      *
      * Example realization:
-     * 
+     *
      * public function dataTable($query)
      * {
      *      return datatables()
@@ -95,17 +95,17 @@ abstract class AdminDataTable extends DataTable
      *          })
      *          ->rawColumns(['selected', 'actions'], $merge = true);
      * }
-     * 
+     *
      * @param mixed $query Results from query() method.
      * @return \Yajra\DataTables\DataTableAbstract
      */
     abstract public function dataTable($query);
-    
+
     /**
      * Define columns to display in html table
-     * 
+     *
      * Example realization:
-     * 
+     *
      * protected function defineColumns()
      * {
      *      return [
@@ -122,7 +122,7 @@ abstract class AdminDataTable extends DataTable
      * @return array
      */
     abstract protected function defineColumns();
-    
+
     protected function routes($model)
     {
         return [
@@ -132,7 +132,7 @@ abstract class AdminDataTable extends DataTable
             'delete' => url('/{id}', ['id' => $model->id]),
         ];
     }
-    
+
     /**
      * Optional method if you want to use html builder.
      *
@@ -146,10 +146,10 @@ abstract class AdminDataTable extends DataTable
             ->setTableId($this->tableId)
             ->columns($this->defineColumns())
             ->minifiedAjax()
-            ->ajax(['url' => $this->getAjaxUrl(),])
+            ->ajax(['url' => $this->getAjaxUrl()])
             ->orderBy(1)
             ->pageLength($this->pageLength);
-        
+
 //        return $this->builder()->buttons(
 //            // Default Buttons
 //            Button::make('print'), // print, pdf, excel, csv, copy
@@ -167,7 +167,7 @@ abstract class AdminDataTable extends DataTable
     {
         return 'Table_' . date('YmdHis');
     }
-    
+
     protected function defineCheckboxCol($name = 'selected')
     {
         return Column::make($name)
@@ -178,7 +178,12 @@ abstract class AdminDataTable extends DataTable
             ->exportable(false)
             ->printable(false);
     }
-    
+
+    protected function renderCheckboxCol($model)
+    {
+        return '<input type="checkbox" value="' . $model->id . '" name="selected[]">';
+    }
+
     protected function defineActionsColumn($name = 'actions', $width = 250)
     {
         return Column::computed($name)
@@ -187,18 +192,41 @@ abstract class AdminDataTable extends DataTable
             ->printable(false)
             ->width($width);
     }
-    
-    protected function renderCheckboxCol($model)
-    {
-        return '<input type="checkbox" value="' . $model->id . '" name="selected[]">';
-    }
-    
+
     protected function renderActionsCol($model)
     {
         $routes = $this->routes($model);
         return view('admin::_templates.datatables.actions', ['routes' => $routes])->render();
     }
-    
+
+    protected function defineSwitchColumn($name, $width = 100)
+    {
+        return Column::computed($name)
+            ->searchable(true)
+            ->exportable(true)
+            ->printable(true)
+            ->width($width);
+    }
+
+//    protected function renderSwitchCol($model)
+//    {
+//
+//    }
+
+    protected function defineSelectColumn($name, $width = 100)
+    {
+        return Column::computed($name)
+            ->searchable(true)
+            ->exportable(true)
+            ->printable(true)
+            ->width($width);
+    }
+
+//    protected function renderSelectCol($model)
+//    {
+//
+//    }
+
     public function htmlBuilder()
     {
         return app('datatables.html');
