@@ -199,33 +199,118 @@ abstract class AdminDataTable extends DataTable
         return view('admin::_templates.datatables.actions', ['routes' => $routes])->render();
     }
 
-    protected function defineSwitchColumn($name, $width = 100)
+    protected function defineButtonColumn($attribute, $title = null, $width = 100)
     {
-        return Column::computed($name)
+        if (is_null($title)) {
+            $title = Column::titleFormat($attribute);
+        }
+
+        return Column::make($attribute)
+            ->title($title)
+            ->orderable(true)
             ->searchable(true)
             ->exportable(true)
             ->printable(true)
             ->width($width);
     }
 
-//    protected function renderSwitchCol($model)
-//    {
-//
-//    }
-
-    protected function defineSelectColumn($name, $width = 100)
+    /**
+     * [
+        'label' => 'Activate',
+        'style' => '' // button|outline|no-border|badge|pill, basic is default style,
+        'tag' => '' // primary|secondary|success|info|warning|danger|focus|light|dark|link,
+        'route' => 'activate', // see @routes for routes list
+        'verb' => 'patch', // get|post|put|patch, get is default verb
+       ]
+     *
+     * @param type $model
+     * @param array $options
+     */
+    protected function renderButtonCol($model, array $options)
     {
-        return Column::computed($name)
+        $routes = $this->routes($model);
+        $this->filterButtonOptions($options);
+
+        return view('admin::_templates.datatables.button', [
+            'label' => $options['label'],
+            'style' => $options['style'], // button|outline|no-border|badge|pill, basic is default style,
+            'tag' => $options['tag'], // primary|secondary|success|info|warning|danger|focus|light|dark|link,
+            'route' => $routes[$options['route']],
+            'verb' => $options['verb'],
+        ])->render();
+    }
+
+    private function filterButtonOptions(array &$options)
+    {
+        $options['style'] = $options['style'] ?? 'badge';
+        $options['tag'] = $options['tag'] ?? 'primary';
+        $options['verb'] = $options['verb'] ?? 'get';
+    }
+
+    protected function defineDropdownColumn($attribute, $title = null, $width = 100)
+    {
+        if (is_null($title)) {
+            $title = Column::titleFormat($attribute);
+        }
+
+        return Column::make($attribute)
+            ->title($title)
+            ->orderable(true)
             ->searchable(true)
             ->exportable(true)
             ->printable(true)
             ->width($width);
     }
 
-//    protected function renderSelectCol($model)
-//    {
-//
-//    }
+    /**
+     * Options example:
+     *
+     * [
+        'label' => 'Options',
+        'style' => '' // basic|outline, basic is default style,
+        'tag' => '' // primary|secondary|success|info|warning|danger|focus|light|dark|link,
+        'options' => [
+            [
+                'label' => 'Activate',
+                'tag' => 'success',
+                'route' => 'activate', // see @routes for routes list
+                'verb' => 'patch', // get|post|put|patch, get is default verb
+            ],
+            [
+                'label' => 'Deactivate',
+                'tag' => 'danger',
+                'route' => 'deactivate',
+                'verb' => 'patch',
+            ],
+            [
+                'label' => 'Edit',
+                'tag' => 'primary',
+                'route' => 'update',
+            ],
+        ]
+     *
+     * @param type $model
+     * @param array $options
+     */
+    protected function renderDropdownCol($model, array $options)
+    {
+        $routes = $this->routes($model);
+        $this->filterDropdownOptions($options);
+
+        return view('admin::_templates.datatables.dropdown', ['options' => $options, 'routes' => $routes])->render();
+    }
+
+    private function filterDropdownOptions(array &$options)
+    {
+        $options['style'] = $options['style'] ?? 'basic';
+        $options['tag'] = $options['tag'] ?? 'primary';
+        $options['options'] = $options['options'] ?? [];
+
+        foreach ($options['options'] as $key => $option) {
+            $options['options'][$key]['tag'] = $option['tag'] ?? null;
+            $options['options'][$key]['verb'] = $option['verb'] ?? 'get';
+        }
+    }
 
     public function htmlBuilder()
     {

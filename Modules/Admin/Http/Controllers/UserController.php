@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 use Modules\Admin\Entities\DataTables\UsersDataTable;
-use Modules\Admin\Services\UserService;
+use Modules\Admin\Services\User\UserService;
 
 class UserController extends Controller
 {

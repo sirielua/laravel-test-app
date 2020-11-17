@@ -4,8 +4,16 @@
             <button type="button" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown" class="mb-2 mr-2 dropdown-toggle btn btn-focus">Selected</button>
             <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu">
                 {{--<button type="button" tabindex="0" class="dropdown-item">Generic</button>--}}
-                
-                <button class="dropdown-item btn btn-transition btn-outline-danger" 
+
+                <button class="dropdown-item btn btn-transition btn-outline-success"
+                    onclick="if(!confirm('Are you sure?')) return false; $(this).closest('.dataTableUpdate').find('input[name=action]').val('activate');">
+                    Activate
+                </button>
+                <button class="dropdown-item btn btn-transition btn-outline-secondary"
+                    onclick="if(!confirm('Are you sure?')) return false; $(this).closest('.dataTableUpdate').find('input[name=action]').val('deactivate');">
+                    Deactivate
+                </button>
+                <button class="dropdown-item btn btn-transition btn-outline-danger"
                     onclick="if(!confirm('Are you sure?')) return false; $(this).closest('.dataTableUpdate').find('input[name=action]').val('delete');">
                     Delete
                 </button>
@@ -21,7 +29,7 @@
             <input type="hidden" name="action" value="" />
             @method('PATCH')
             @csrf
-            
+
             <div class="main-card mb-3 card">
                 <div class="card-header">
                     <h5 class="card-title mb-0">Users</h5>
