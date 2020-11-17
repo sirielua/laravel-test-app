@@ -2,14 +2,18 @@
 
 namespace App;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Components\Model\HasStoredFiles;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use HasStoredFiles, Notifiable;
 
+    const STATUS_IS_NOT_ACTIVE = 0;
+    const STATUS_IS_ACTIVE = 1;
+
+    
     /**
      * The model's default values for attributes.
      *
@@ -44,6 +48,17 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+    ];
+
+    /**
+     * The attributes that stores file paths in corresponding storages
+     *
+     * @var array
+     */
+    protected static $stored_files = [
+        'public' => [
+            'photo' => 'images/avatars/{Y}',
+        ],
     ];
 
     /**

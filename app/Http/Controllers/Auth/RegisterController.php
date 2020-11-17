@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
-use App\Services\UserService;
+use App\Services\User\UserService;
 
 class RegisterController extends Controller
 {

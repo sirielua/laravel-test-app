@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-use App\Services\UserService;
+use App\Services\User\UserService;
 use Illuminate\Validation\ValidationException;
 
 class CreateUser extends Command

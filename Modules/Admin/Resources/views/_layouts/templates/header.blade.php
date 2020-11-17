@@ -63,22 +63,22 @@
             <div class="header-btn-lg pr-0">
                 <div class="widget-content p-0">
                     <div class="widget-content-wrapper">
-                        
+
                         @auth
                             <div class="widget-content-left">
                                 <div class="btn-group">
                                     <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="p-0 btn">
                                         <i class="pe-7s-headphones icon-gradient bg-mixed-hopes" style="font-size: 2rem;"></i>
-                                        
+
                                         {{--<img width="42" class="rounded-circle" src="architect-ui/assets/images/avatars/1.jpg" alt="">--}}
                                         <i class="fa fa-angle-down ml-2 opacity-8"></i>
                                     </a>
                                     <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
                                         <a class="dropdown-item" href="{{ route('admin::users.show', Auth::user()->id) }}">Profile</a>
                                         <a class="dropdown-item" href="{{ route('admin::users.edit', Auth::user()->id) }}">Edit</a>
-                                        
+
                                         <div tabindex="-1" class="dropdown-divider"></div>
-                                        
+
                                         @if (Route::has('admin::logout'))
                                             <a class="spoofed dropdown-item" href="{{ route('admin::logout') }}"
                                                 data-confirm-msg="Are you sure?" data-ajax="false" data-method="post" data-csrf="{{ csrf_token() }}">
@@ -102,7 +102,7 @@
                                     <i class="pe-7s-user icon-gradient bg-mixed-hopes" style="font-size: 2rem;"></i>
                                 </div>
                             </div>
-                            
+
                             <div class="widget-content-left  ml-3 header-user-info">
                                 <div class="widget-heading">Guest</div>
                             </div>

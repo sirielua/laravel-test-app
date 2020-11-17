@@ -1,14 +1,13 @@
 <?php
 
-namespace Modules\Admin\Services;
+namespace Modules\Admin\Services\User;
 
-use App\Services\UserService as BaseUserService;
+use App\Services\User\UserService as BaseUserService;
 
 use App\User;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Auth;
 
 class UserService extends BaseUserService
 {
@@ -33,21 +32,10 @@ class UserService extends BaseUserService
             'selected.*' => ['integer'],
         ])->validate();
 
-        $method = 'batch'.ucfirst($validated['action']);
-        if(method_exists($this, $method)) {
-            call_user_func([$this, $method], $validated['selected']);
-        }
-    }
+        $models = User::find($validated['selected']);
 
-    public function batchDelete($selected = [])
-    {
-        $models = User::find($selected);
         foreach ($models as $model) {
-            if($model->id === Auth::user()->id) {
-                // Suicide attempt prevented
-                continue;
-            }
-            $model->delete();
+            call_user_func([$this, $validated['action']], $model->id);
         }
     }
 }

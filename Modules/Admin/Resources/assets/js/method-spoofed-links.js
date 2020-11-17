@@ -129,6 +129,13 @@
     // jQueryBindings
 
     $(document).ready(function() {
+        $("a.spoofed").on('click', function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+
+            spoofLink(this);
+        });
+        
         $(document).on('click', "a.spoofed", function(e) {
             e.stopPropagation();
             e.preventDefault();

@@ -51,8 +51,6 @@ class UsersDataTable extends AdminDataTable
      */
     public function dataTable($query)
     {
-
-
         return datatables()
             ->eloquent($query)
 
@@ -64,41 +62,34 @@ class UsersDataTable extends AdminDataTable
                 return $this->renderActionsCol($model);
             })
 
-            ->editColumn('is_active', function ($model) {
-                $routes = $this->routes($model);
-
-                return $model->is_active ?
-                    '<a href="' . $routes['deactivate'] . '" class="dataTableControl mb-2 mr-2 badge badge-pill badge-success" data-method="PATCH">Active</a>'
-                    :
-                    '<a href="' . $routes['activate'] . '" class="dataTableControl mb-2 mr-2 badge badge-pill badge-danger" data-method="PATCH">Inactive</a>';
-
-//                return $this->renderSwitchCol($model, [
-//                    ['Active', 'success', $routes['deactivate'], $model->is_active],
-//                    ['Inactive', 'danger', $routes['activate'], !$model->is_active],
-//                ]);
+            ->editColumn('status', function ($model) {
+                return $this->renderButtonCol($model, [
+                    'label' => $model->is_active ? 'Active' : 'Inactive',
+                    'tag' => $model->is_active ? 'success' : 'secondary',
+                    'route' => $model->is_active ? 'deactivate' : 'activate',
+                    'verb' => 'patch',
+                ]);
             })
 
-            ->editColumn('status', function ($model) {
-                $routes = $this->routes($model);
-
-                return $model->is_active ?
-                    '<div class="dropdown d-inline-block">
-                        <button type="button" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown" class="mb-2 mr-2 dropdown-toggle btn btn-success btn-sm">Active</button>
-                        <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 33px, 0px); top: 0px; left: 0px; will-change: transform;">
-                            <a href="' . $routes['activate'] . '" type="button" tabindex="0" class="dataTableControl dropdown-item" data-method="PATCH">Activate</a>
-                            <a href="' . $routes['deactivate'] . '" type="button" tabindex="0" class="dataTableControl dropdown-item" data-method="PATCH">Deactivate</a>
-                        </div>
-                    </div>'
-                    :
-                    '<div class="dropdown d-inline-block">
-                        <button type="button" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown" class="mb-2 mr-2 dropdown-toggle btn btn-danger btn-sm">Inactive</button>
-                        <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 33px, 0px); top: 0px; left: 0px; will-change: transform;">
-                            <a href="' . $routes['activate'] . '" type="button" tabindex="0" class="dataTableControl dropdown-item" data-method="PATCH">Activate</a>
-                            <a href="' . $routes['deactivate'] . '" type="button" tabindex="0" class="dataTableControl dropdown-item" data-method="PATCH">Deactivate</a>
-                        </div>
-                    </div>';
-
-                //return $this->renderSwitchCol($model);
+            ->editColumn('is_active', function ($model) {
+                return $this->renderDropdownCol($model, [
+                    'label' => $model->is_active ? 'Active' : 'Inactive',
+                    'tag' => $model->is_active ? 'success' : 'secondary',
+                    'options' => [
+                        [
+                            'label' => 'Activate',
+                            'tag' => 'success',
+                            'route' => 'activate',
+                            'verb' => 'patch',
+                        ],
+                        [
+                            'label' => 'Deactivate',
+                            'tag' => 'secondary',
+                            'route' => 'deactivate',
+                            'verb' => 'patch',
+                        ],
+                    ]
+                ]);
             })
 
             ->editColumn('created_at', function ($user) {
@@ -126,8 +117,8 @@ class UsersDataTable extends AdminDataTable
             Column::make('email')->search('email'),
             Column::make('created_at'),
             Column::make('updated_at'),
-            $this->defineSwitchColumn('is_active'),
-            $this->defineSelectColumn('status'),
+            $this->defineButtonColumn('status'),
+            $this->defineDropdownColumn('is_active', 'Status'),
             $this->defineActionsColumn(),
         ];
     }
