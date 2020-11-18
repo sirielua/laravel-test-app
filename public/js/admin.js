@@ -278,10 +278,20 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
   $(document).ready(function () {
-    $(document).on('click', "a.spoofed", function (e) {
+    $("a.spoofed").on('click', function (e) {
+        alert(1);
+        return false;
       e.stopPropagation();
       e.preventDefault();
       spoofLink(this);
+      return false;
+    });
+    $(document).on('click', "a.spoofed", function (e) {
+        return false;
+      e.stopPropagation();
+      e.preventDefault();
+      spoofLink(this);
+      return false;
     });
     $(document).on('click', "a.dataTableControl", function (e) {
       e.stopPropagation();
@@ -11211,8 +11221,8 @@ return jQuery;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /store/localhost/html/modus-door-selector/Modules/Admin/Resources/assets/js/app.js */"./Resources/assets/js/app.js");
-module.exports = __webpack_require__(/*! /store/localhost/html/modus-door-selector/Modules/Admin/Resources/assets/sass/app.scss */"./Resources/assets/sass/app.scss");
+__webpack_require__(/*! /store/localhost/html/laravel-test-app/Modules/Admin/Resources/assets/js/app.js */"./Resources/assets/js/app.js");
+module.exports = __webpack_require__(/*! /store/localhost/html/laravel-test-app/Modules/Admin/Resources/assets/sass/app.scss */"./Resources/assets/sass/app.scss");
 
 
 /***/ })

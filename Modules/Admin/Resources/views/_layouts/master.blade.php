@@ -7,7 +7,7 @@
         <meta http-equiv="Content-Language" content="{{ str_replace('_', '-', app()->getLocale()) }}">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        
+
         <title>Module Admin</title>
         <meta name="description" content="">
         <meta name="msapplication-tap-highlight" content="no">
@@ -28,31 +28,31 @@
     </head>
     <body>
         <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
-            
+
             {{-- App Header --}}
             @include('admin::_layouts.templates.header')
-            
+
             <div class="app-main">
-                
+
                 {{-- App Sidebar --}}
                 @include('admin::_layouts.templates.sidebar')
-                
+
                 <div class="app-main__outer">
                     <div class="app-main__inner">
-                        
+
                         {{-- Page Header --}}
                         @include('admin::_layouts.templates.page-header')
 
                         {{-- Page Content --}}
                         @yield('content')
-                        
-                    </div> 
-                    
+
+                    </div>
+
                     {{-- Page Footer Start --}}
                     @include('admin::_layouts.templates.footer')
-                    
+
                 </div>
-                <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+                {{-- <script src="http://maps.google.com/maps/api/js?sensor=false"></script> --}}
             </div>
         </div>
         {{-- Laravel Mix - JS File --}}

@@ -9,20 +9,20 @@
                 spoofRequestVerb(href, data);
             }
         }
-    }
+    };
 
     const spoofLinkAjax = (el, callback) => {
         if(isConfirmed(el)) {
             const { href, data } = getRequestInfo(el);
             spoofRequestVerbAjax(href, data, callback);
         }
-    }
+    };
 
     const ajaxForm = (el, callback) => {
         const jqXHR = $.ajax({
             url: $(el).attr('action'),
             type: $(el).attr('method'),
-            data: $(el).serialize(),
+            data: $(el).serialize()
         }).done(() => {
             if(callback) {
                 callback(null, jqXHR);
@@ -36,7 +36,7 @@
                 callback(new Error(message));
             }
         });
-    }
+    };
 
     const isConfirmed = (el) => {
         const confirmMsg = el.getAttribute('data-confirm-msg');
@@ -53,7 +53,7 @@
 
         const data = {
             _method: verb, 
-            _token: token, 
+            _token: token
         };
 
         if (params && params.includes('&')) {
@@ -129,6 +129,13 @@
     // jQueryBindings
 
     $(document).ready(function() {
+        $("a.spoofed").on('click', function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+
+            spoofLink(this);
+        });
+        
         $(document).on('click', "a.spoofed", function(e) {
             e.stopPropagation();
             e.preventDefault();

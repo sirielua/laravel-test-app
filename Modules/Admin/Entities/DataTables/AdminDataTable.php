@@ -1,39 +1,39 @@
 <?php
 
 /**
- * 
+ *
  * Controller implementation:
- * 
+ *
  * Single action version:
- * 
+ *
  * public function index(UsersDataTable $dataTable)
  * {
  *      return $dataTable->render('users.index');
  * }
- * 
+ *
  * or if you want separate action for ajax request:
- * 
+ *
  * public function index(Request $request, UsersDataTable $dataTable)
  * {
  *      return view('admin::users.index', ['dataTable' => $dataTable->html()]);
  * }
- * 
+ *
  * public function grid(Request $request, UsersDataTable $dataTable)
  * {
  *      $isAjax = $request->ajax() && $request->wantsJson();
  *      return $isAjax ? $dataTable->ajax() : abort(403);
  * }
- * 
+ *
  * then you need to render your datatable html:
- * 
+ *
  * {{ $dataTable->table($attributes = [], $drawFooter = false, $drawSearch = true) }}
- * 
+ *
  * and add automatically generated javascript needed for table to operate
  * @push('scripts')
  *      {{ $dataTable->scripts() }}
  * @endpush
- * 
- * 
+ *
+ *
  * return $dataTable->render('users.index');
  */
 namespace Modules\Admin\Entities\DataTables;
@@ -49,34 +49,34 @@ use Illuminate\Database\Eloquent\Model;
 abstract class AdminDataTable extends DataTable
 {
     protected $tableId = 'admin-data-table';
-    
+
     protected $checkboxColName = 'selected';
-    
+
     protected $actionsColName = 'actions';
-    
+
     protected $pageLength = 25;
-    
+
     abstract protected function getAjaxUrl();
-    
+
     /**
      * Get query source of dataTable.
      *
      * Example realization:
-     * 
+     *
      * public function query()
      * {
      *     return app()->make(User::class)->newQuery();
      * }
-     * 
+     *
      * @return mixed
      */
     abstract public function query();
-    
+
     /**
      * Build DataTable class.
      *
      * Example realization:
-     * 
+     *
      * public function dataTable($query)
      * {
      *      return datatables()
@@ -95,17 +95,17 @@ abstract class AdminDataTable extends DataTable
      *          })
      *          ->rawColumns(['selected', 'actions'], $merge = true);
      * }
-     * 
+     *
      * @param mixed $query Results from query() method.
      * @return \Yajra\DataTables\DataTableAbstract
      */
     abstract public function dataTable($query);
-    
+
     /**
      * Define columns to display in html table
-     * 
+     *
      * Example realization:
-     * 
+     *
      * protected function defineColumns()
      * {
      *      return [
@@ -122,7 +122,7 @@ abstract class AdminDataTable extends DataTable
      * @return array
      */
     abstract protected function defineColumns();
-    
+
     protected function routes($model)
     {
         return [
@@ -132,7 +132,7 @@ abstract class AdminDataTable extends DataTable
             'delete' => url('/{id}', ['id' => $model->id]),
         ];
     }
-    
+
     /**
      * Optional method if you want to use html builder.
      *
@@ -146,10 +146,10 @@ abstract class AdminDataTable extends DataTable
             ->setTableId($this->tableId)
             ->columns($this->defineColumns())
             ->minifiedAjax()
-            ->ajax(['url' => $this->getAjaxUrl(),])
+            ->ajax(['url' => $this->getAjaxUrl()])
             ->orderBy(1)
             ->pageLength($this->pageLength);
-        
+
 //        return $this->builder()->buttons(
 //            // Default Buttons
 //            Button::make('print'), // print, pdf, excel, csv, copy
@@ -167,7 +167,7 @@ abstract class AdminDataTable extends DataTable
     {
         return 'Table_' . date('YmdHis');
     }
-    
+
     protected function defineCheckboxCol($name = 'selected')
     {
         return Column::make($name)
@@ -178,7 +178,12 @@ abstract class AdminDataTable extends DataTable
             ->exportable(false)
             ->printable(false);
     }
-    
+
+    protected function renderCheckboxCol($model)
+    {
+        return '<input type="checkbox" value="' . $model->id . '" name="selected[]">';
+    }
+
     protected function defineActionsColumn($name = 'actions', $width = 250)
     {
         return Column::computed($name)
@@ -187,18 +192,126 @@ abstract class AdminDataTable extends DataTable
             ->printable(false)
             ->width($width);
     }
-    
-    protected function renderCheckboxCol($model)
-    {
-        return '<input type="checkbox" value="' . $model->id . '" name="selected[]">';
-    }
-    
+
     protected function renderActionsCol($model)
     {
         $routes = $this->routes($model);
         return view('admin::_templates.datatables.actions', ['routes' => $routes])->render();
     }
-    
+
+    protected function defineButtonColumn($attribute, $title = null, $width = 100)
+    {
+        if (is_null($title)) {
+            $title = Column::titleFormat($attribute);
+        }
+
+        return Column::make($attribute)
+            ->title($title)
+            ->orderable(true)
+            ->searchable(true)
+            ->exportable(true)
+            ->printable(true)
+            ->width($width);
+    }
+
+    /**
+     * [
+        'label' => 'Activate',
+        'style' => '' // button|outline|no-border|badge|pill, basic is default style,
+        'tag' => '' // primary|secondary|success|info|warning|danger|focus|light|dark|link,
+        'route' => 'activate', // see @routes for routes list
+        'verb' => 'patch', // get|post|put|patch, get is default verb
+       ]
+     *
+     * @param type $model
+     * @param array $options
+     */
+    protected function renderButtonCol($model, array $options)
+    {
+        $routes = $this->routes($model);
+        $this->filterButtonOptions($options);
+
+        return view('admin::_templates.datatables.button', [
+            'label' => $options['label'],
+            'style' => $options['style'], // button|outline|no-border|badge|pill, basic is default style,
+            'tag' => $options['tag'], // primary|secondary|success|info|warning|danger|focus|light|dark|link,
+            'route' => $routes[$options['route']],
+            'verb' => $options['verb'],
+        ])->render();
+    }
+
+    private function filterButtonOptions(array &$options)
+    {
+        $options['style'] = $options['style'] ?? 'badge';
+        $options['tag'] = $options['tag'] ?? 'primary';
+        $options['verb'] = $options['verb'] ?? 'get';
+    }
+
+    protected function defineDropdownColumn($attribute, $title = null, $width = 100)
+    {
+        if (is_null($title)) {
+            $title = Column::titleFormat($attribute);
+        }
+
+        return Column::make($attribute)
+            ->title($title)
+            ->orderable(true)
+            ->searchable(true)
+            ->exportable(true)
+            ->printable(true)
+            ->width($width);
+    }
+
+    /**
+     * Options example:
+     *
+     * [
+        'label' => 'Options',
+        'style' => '' // basic|outline, basic is default style,
+        'tag' => '' // primary|secondary|success|info|warning|danger|focus|light|dark|link,
+        'options' => [
+            [
+                'label' => 'Activate',
+                'tag' => 'success',
+                'route' => 'activate', // see @routes for routes list
+                'verb' => 'patch', // get|post|put|patch, get is default verb
+            ],
+            [
+                'label' => 'Deactivate',
+                'tag' => 'danger',
+                'route' => 'deactivate',
+                'verb' => 'patch',
+            ],
+            [
+                'label' => 'Edit',
+                'tag' => 'primary',
+                'route' => 'update',
+            ],
+        ]
+     *
+     * @param type $model
+     * @param array $options
+     */
+    protected function renderDropdownCol($model, array $options)
+    {
+        $routes = $this->routes($model);
+        $this->filterDropdownOptions($options);
+
+        return view('admin::_templates.datatables.dropdown', ['options' => $options, 'routes' => $routes])->render();
+    }
+
+    private function filterDropdownOptions(array &$options)
+    {
+        $options['style'] = $options['style'] ?? 'basic';
+        $options['tag'] = $options['tag'] ?? 'primary';
+        $options['options'] = $options['options'] ?? [];
+
+        foreach ($options['options'] as $key => $option) {
+            $options['options'][$key]['tag'] = $option['tag'] ?? null;
+            $options['options'][$key]['verb'] = $option['verb'] ?? 'get';
+        }
+    }
+
     public function htmlBuilder()
     {
         return app('datatables.html');

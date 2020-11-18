@@ -25,9 +25,9 @@
                 </a>
             </div>
         </div>
-        
+
         <div class="card-body">
-            
+
             <ul class="list-group">
                 <li class="list-group-item">
                     <h5 class="list-group-item-heading">Name</h5>
@@ -44,6 +44,16 @@
                     @else
                         <p class="list-group-item-text">No photo</p>
                     @endif
+                </li>
+                <li class="list-group-item">
+                    <h5 class="list-group-item-heading">Is Active</h5>
+                    <p class="list-group-item-text">
+                        @if ($model->is_active)
+                            <div class="mb-2 mr-2 badge badge-success">Active</div>
+                        @else
+                            <div class="mb-2 mr-2 badge badge-danger">Inactive</div>
+                        @endif
+                    </p>
                 </li>
                 <li class="list-group-item">
                     <h5 class="list-group-item-heading">Created At</h5>
