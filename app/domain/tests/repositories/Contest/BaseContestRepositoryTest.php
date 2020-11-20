@@ -29,7 +29,6 @@ abstract class BaseContestRepositoryTest extends TestCase
     private function guardEquals(Contest $created, Contest $fetched): void
     {
         $this->assertEquals($fetched->getId(), $created->getId());
-        $this->assertEquals($fetched->getSlug(), $created->getSlug());
         $this->assertEquals($fetched->getStatus(), $created->getStatus());
         $this->assertEquals($fetched->getDescription(), $created->getDescription());
     }
@@ -51,10 +50,8 @@ abstract class BaseContestRepositoryTest extends TestCase
         $contest = (new ContestBuilder())->build();
         self::$repository->add($contest);
 
-        $contest->changeSlug('New Slug');
         $contest->deactivate();
         $contest->changeDescription(new Description(
-            'en',
             'New Title',
             'New Subtitle',
             'New Explanation',

@@ -2,11 +2,10 @@
 
 namespace App\domain\service\Participant\Remove;
 
-use App\domain\service\CommandHandler;
 use App\domain\repositories\Participant\ParticipantRepository;
 use App\domain\dispatchers\EventDispatcher;
 
-class RemoveHandler extends CommandHandler
+class RemoveHandler
 {
     private $participants;
     private $dispatcher;

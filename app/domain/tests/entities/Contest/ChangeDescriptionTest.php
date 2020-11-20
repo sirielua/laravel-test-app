@@ -12,8 +12,8 @@ class ChangeDescriptionTest extends TestCase
 {
     public function testChangeDescription()
     {
-        $oldDescription = new Description('en', 'Old Title', 'Old Subtitle', 'Old Explanation', new Banner('/old-banner-path/image.jpg'));
-        $newDescription = new Description('en', 'New Title', 'New Subtitle', 'New Explanation', new Banner('/new-banner-path/image.jpg'));
+        $oldDescription = new Description('Old Title', 'Old Subtitle', 'Old Explanation', new Banner('/old-banner-path/image.jpg'));
+        $newDescription = new Description('New Title', 'New Subtitle', 'New Explanation', new Banner('/new-banner-path/image.jpg'));
         $contest = (new ContestBuilder())->withDescription($oldDescription)->build();
 
         $contest->changeDescription($newDescription);

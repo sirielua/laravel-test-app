@@ -2,10 +2,10 @@
 
 namespace App\domain\service\Contest\Deactivate;
 
-use App\domain\service\Command;
+use App\domain\service\CommandTrait;
 use Assert\Assertion;
 
-final class DeactivateCommand extends Command
+class DeactivateCommand extends Command
 {
     use CommandTrait;
 
@@ -14,7 +14,7 @@ final class DeactivateCommand extends Command
     public function __construct(string $id)
     {
         Assertion::notEmpty($id);
-        
+
         $this->id = $id;
     }
 

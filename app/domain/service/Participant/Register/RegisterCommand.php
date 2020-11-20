@@ -2,11 +2,13 @@
 
 namespace App\domain\service\Participant\Register;
 
-use App\domain\service\Command;
+use App\domain\service\CommandTrait;
 use Assert\Assertion;
 
 class RegisterCommand extends Command
 {
+    use CommandTrait;
+
     private $firstName;
     private $lastName;
     private $phone;
@@ -31,7 +33,7 @@ class RegisterCommand extends Command
     {
         return $this->lastName;
     }
-    
+
     public function getPhone(): string
     {
         return $this->phone;

@@ -2,17 +2,19 @@
 
 namespace App\domain\service\Contest\Activate;
 
-use App\domain\service\Command;
+use App\domain\service\CommandTrait;
 use Assert\Assertion;
 
-final class ActivateCommand extends Command
+class ActivateCommand extends Command
 {
+    use CommandTrait;
+
     private $id;
 
     public function __construct(string $id)
     {
         Assertion::notEmpty($id);
-        
+
         $this->id = $id;
     }
 

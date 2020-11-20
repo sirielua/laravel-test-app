@@ -2,12 +2,11 @@
 
 namespace App\domain\service\Contest\Activate;
 
-use App\domain\service\CommandHandler;
 use App\domain\entities\Cotest\Id;
 use App\domain\repositories\Contest\ContestRepository;
 use App\domain\dispatchers\EventDispatcher;
 
-class ActivateHandler extends CommandHandler
+class ActivateHandler
 {
     private $contests;
     private $dispatcher;

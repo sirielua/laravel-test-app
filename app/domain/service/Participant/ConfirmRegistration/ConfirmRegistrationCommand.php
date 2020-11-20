@@ -2,11 +2,13 @@
 
 namespace App\domain\service\Participant\ConfirmRegistration;
 
-use App\domain\service\Command;
+use App\domain\service\CommandTrait;
 use Assert\Assertion;
 
 class ConfirmRegistrationCommand extends Command
 {
+    use CommandTrait;
+
     private $id;
     private $code;
 

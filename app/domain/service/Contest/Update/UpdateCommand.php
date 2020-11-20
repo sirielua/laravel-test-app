@@ -2,12 +2,14 @@
 
 namespace App\domain\service\Contest\Update;
 
-use App\domain\service\Command;
+use App\domain\service\CommandTrait;
 use App\domain\service\Contest\dto\ContestDto;
 use Assert\Assertion;
 
 class UpdateCommand implements Command
 {
+    use CommandTrait;
+
     private $id;
     private $dto;
     private $contests;
@@ -16,7 +18,7 @@ class UpdateCommand implements Command
     public function __construct(string $id, ContestDto $dto)
     {
         Assertion::notEmpty($id);
-        
+
         $this->id = $id;
         $this->dto = $dto;
     }

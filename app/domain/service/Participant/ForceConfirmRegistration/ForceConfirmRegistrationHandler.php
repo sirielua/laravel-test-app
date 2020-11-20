@@ -2,12 +2,10 @@
 
 namespace App\domain\service\Participant\ForceConfirmRegistration;
 
-use App\domain\service\CommandHandler;
-
 use App\domain\repositories\Participant\ParticipantRepository;
 use App\domain\dispatchers\EventDispatcher;
 
-class ForceConfirmRegistrationHandler extends CommandHandler
+class ForceConfirmRegistrationHandler
 {
     private $participants;
     private $dispatcher;

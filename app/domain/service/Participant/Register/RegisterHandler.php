@@ -2,8 +2,6 @@
 
 namespace App\domain\service\Participant\Register;
 
-use App\domain\service\CommandHandler;
-
 use App\domain\repositories\Participant\ParticipantRepository;
 use App\domain\dispatchers\EventDispatcher;
 
@@ -15,7 +13,7 @@ use App\domain\entities\Participant\Phone;
 use App\domain\entities\Participant\RegistrationData;
 use App\domain\entities\Participant\RegistrationStatus;
 
-class RegisterHandler extends CommandHandler
+class RegisterHandler
 {
     private $confirmationCodeGenerator;
     private $participants;

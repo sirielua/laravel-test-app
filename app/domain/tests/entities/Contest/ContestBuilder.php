@@ -11,17 +11,14 @@ use App\domain\entities\Contest\Banner;
 class ContestBuilder
 {
     private $id;
-    private $slug;
     private $status;
     private $description;
 
     public function __construct()
     {
         $this->id = Id::next();
-        $this->slug = 'test-contest';
         $this->status = new Status(Status::ACTIVE);
         $this->description = new Description(
-            'en',
             'Test Contest Header',
             'Test Contest Subheader',
             'Some explaining text',
@@ -33,13 +30,6 @@ class ContestBuilder
     {
         $clone = clone $this;
         $clone->id = $id;
-        return $clone;
-    }
-
-    public function withSlug(string $slug): self
-    {
-        $clone = clone $this;
-        $clone->slug = $slug;
         return $clone;
     }
 
@@ -61,7 +51,6 @@ class ContestBuilder
     {
         $contest = new Contest(
             $this->id,
-            $this->slug,
             $this->status,
             $this->description,
         );

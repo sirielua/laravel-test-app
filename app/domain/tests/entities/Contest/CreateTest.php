@@ -18,10 +18,8 @@ class CreateTest extends TestCase
     {
         $contest = new Contest(
             $id = Id::next(),
-            $slug = 'test-contest',
             $status = new Status(Status::ACTIVE),
             $description = new Description(
-                'en',
                 'Test Contest Header',
                 'Test Contest Subheader',
                 'Some explaining text',
@@ -33,7 +31,6 @@ class CreateTest extends TestCase
         $this->assertInstanceOf(ContestCreated::class, end($events));
 
         $this->assertEquals($id, $contest->getId());
-        $this->assertEquals($slug, $contest->getSlug());
         $this->assertEquals($status, $contest->getStatus());
         $this->assertEquals($description, $contest->getDescription());
 

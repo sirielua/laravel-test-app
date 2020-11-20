@@ -4,34 +4,21 @@ namespace App\domain\entities\Contest;
 
 use App\domain\entities\AggregateRoot;
 use App\domain\entities\EventTrait;
-use Assert\Assertion;
 
 class Contest implements AggregateRoot
 {
     use EventTrait;
 
     private $id;
-    private $slug;
     private $description;
 
-    public function __construct(Id $id, string $slug, Status $status, Description $description)
+    public function __construct(Id $id, Status $status, Description $description)
     {
-        Assertion::notEmpty($slug);
-
         $this->id = $id;
-        $this->slug = $slug;
         $this->status = $status;
         $this->description = $description;
 
         $this->addEvent(new events\ContestCreated($this->id));
-    }
-
-    public function changeSlug(string $slug): void
-    {
-        if($this->slug !== $slug) {
-            $this->slug = $slug;
-            $this->addEvent(new events\ContestSlugChanged($this->id));
-        }
     }
 
     public function activate(): void
@@ -79,11 +66,6 @@ class Contest implements AggregateRoot
     public function getStatus(): Status
     {
         return $this->status;
-    }
-
-    public function getSlug(): string
-    {
-        return $this->slug;
     }
 
     public function getDescription(): Description

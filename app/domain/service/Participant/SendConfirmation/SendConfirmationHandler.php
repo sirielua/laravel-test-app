@@ -2,16 +2,13 @@
 
 namespace App\domain\service\Participant\SendConfirmation;
 
-use App\domain\service\CommandHandler;
-
 use App\domain\components\ConfirmationCodeGenerator\ConfirmationCodeGenerator;
 use App\domain\components\RegistrationNotifier\RegistrationNotifier;
 use App\domain\repositories\Participant\ParticipantRepository;
 use App\domain\dispatchers\EventDispatcher;
-
 use App\domain\entities\Participant\Id;
 
-class SendConfirmationCommand extends CommandHandler
+class SendConfirmationCommand
 {
     private $confirmationCodeGenerator;
     private $notifier;

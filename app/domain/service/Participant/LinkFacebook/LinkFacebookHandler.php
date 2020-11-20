@@ -2,7 +2,6 @@
 
 namespace App\domain\service\Participan\LinkFacebook;
 
-use App\domain\service\CommandHandler;
 use App\domain\repositories\Participant\ParticipantRepository;
 use App\domain\dispatchers\EventDispatcher;
 

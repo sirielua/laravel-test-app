@@ -2,11 +2,11 @@
 
 namespace App\domain\service;
 
-abstract class Command
+trait CommandTrait
 {
     private $isHandled = false;
 
-    public function __get($name): mixed
+    public function __get($name)
     {
         $getter = 'get' . \ucfirst($name);
         if (\method_exists($this, $getter)) {

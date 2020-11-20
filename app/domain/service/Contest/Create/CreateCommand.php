@@ -2,11 +2,13 @@
 
 namespace App\domain\service\Contest\Create;
 
-use App\domain\service\Command;
+use App\domain\service\CommandTrait;
 use App\domain\service\Contest\dto\ContestDto;
 
-final class CreateCommand extends Command
+class CreateCommand
 {
+    use CommandTrait;
+
     private $dto;
 
     public function __construct(ContestDto $dto)
@@ -14,7 +16,7 @@ final class CreateCommand extends Command
         $this->dto = $dto;
     }
 
-    public function getDto(): string
+    public function getDto(): ContestDto
     {
         return $this->dto;
     }

@@ -2,7 +2,6 @@
 
 namespace App\domain\service\Contest\Remove;
 
-use App\domain\service\CommandHandler;
 use App\domain\entities\Cotest\Id;
 use App\domain\repositories\Contest\ContestRepository;
 use App\domain\dispatchers\EventDispatcher;

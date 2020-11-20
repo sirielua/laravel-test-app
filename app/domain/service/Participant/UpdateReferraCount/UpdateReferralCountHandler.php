@@ -2,11 +2,10 @@
 
 namespace App\domain\service\Participant\UpdateReferralCount;
 
-use App\domain\service\CommandHandler;
 use App\domain\repositories\Participant\ParticipantRepository;
 use App\domain\dispatchers\EventDispatcher;
 
-class UpdateReferralCountHandler extends CommandHandler
+class UpdateReferralCountHandler
 {
     private $participants;
     private $dispatcher;

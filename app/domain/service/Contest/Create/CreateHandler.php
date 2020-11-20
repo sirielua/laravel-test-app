@@ -2,16 +2,16 @@
 
 namespace App\domain\service\Contest\Create;
 
-use App\domain\service\CommandHandler;
 use App\domain\repositories\Contest\ContestRepository;
 use App\domain\dispatchers\EventDispatcher;
-use App\domain\service\Contest\helpers\ContestDtoHelper;
 
-use App\domain\entities\Cotest\Contest;
-use App\domain\entities\Cotest\Id;
-use App\domain\entities\Cotest\Status;
+use App\domain\entities\Contest\Contest;
+use App\domain\entities\Contest\Id;
+use App\domain\entities\Contest\Status;
+use App\domain\entities\Contest\Description;
+use App\domain\entities\Contest\Banner;
 
-class CreateHandler extends CommandHandler
+class CreateHandler
 {
     private $contests;
     private $dispatcher;
@@ -22,15 +22,22 @@ class CreateHandler extends CommandHandler
         $this->dispatcher = $dispatcher;
     }
 
-    public function handle(CreateCommand $command): void
+    public function handle(CreateCommand $command)
     {
         $contest = new Contest(
             Id::next(),
             $command->dto->getIsActive() ? new Status(Status::ACTIVE) : new Status(Status::INACTIVE),
-            ContestDtoHelper::dto2Description($command->dto->getDescription()),
+            new Description(
+                $command->dto->getHeadline(),
+                $command->dto->getSubheadline() ?? null,
+                $command->dto->getExplainingText() ?? null,
+                $command->dto->getBanner() ? new Banner($command->dto->getBanner()) : null
+            ),
         );
 
         $this->contests->add($contest);
         $this->dispatcher->dispatch($contest->releaseEvents());
+
+        return $contest->getId();
     }
 }
