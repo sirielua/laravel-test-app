@@ -5,7 +5,7 @@ namespace App\domain\service\Participant\ForceConfirmRegistration;
 use App\domain\service\CommandTrait;
 use Assert\Assertion;
 
-class ForceConfirmRegistrationCommand extends Command
+class ForceConfirmRegistrationCommand
 {
     use CommandTrait;
 

@@ -6,19 +6,19 @@
  *
  * Single action version:
  *
- * public function index(UsersDataTable $dataTable)
+ * public function index(UserDataTable $dataTable)
  * {
  *      return $dataTable->render('users.index');
  * }
  *
  * or if you want separate action for ajax request:
  *
- * public function index(Request $request, UsersDataTable $dataTable)
+ * public function index(Request $request, UserDataTable $dataTable)
  * {
  *      return view('admin::users.index', ['dataTable' => $dataTable->html()]);
  * }
  *
- * public function grid(Request $request, UsersDataTable $dataTable)
+ * public function grid(Request $request, UserDataTable $dataTable)
  * {
  *      $isAjax = $request->ajax() && $request->wantsJson();
  *      return $isAjax ? $dataTable->ajax() : abort(403);
@@ -142,7 +142,7 @@ abstract class AdminDataTable extends DataTable
     {
         return $this->builder()
             ->processing(false)
-            ->parameters([])
+            ->parameters(['aaa' => 'bbbb'])
             ->setTableId($this->tableId)
             ->columns($this->defineColumns())
             ->minifiedAjax()

@@ -2,10 +2,10 @@
 
 namespace Modules\Admin\Entities\DataTables;
 
-use App\User;
+use App\Models\User;
 use Yajra\DataTables\Html\Column;
 
-class UsersDataTable extends AdminDataTable
+class UserDataTable extends AdminDataTable
 {
     protected $tableId = 'users-table';
 
@@ -62,7 +62,7 @@ class UsersDataTable extends AdminDataTable
                 return $this->renderActionsCol($model);
             })
 
-            ->editColumn('status', function ($model) {
+            ->editColumn('is_active', function ($model) {
                 return $this->renderButtonCol($model, [
                     'label' => $model->is_active ? 'Active' : 'Inactive',
                     'tag' => $model->is_active ? 'success' : 'secondary',
@@ -71,26 +71,26 @@ class UsersDataTable extends AdminDataTable
                 ]);
             })
 
-            ->editColumn('is_active', function ($model) {
-                return $this->renderDropdownCol($model, [
-                    'label' => $model->is_active ? 'Active' : 'Inactive',
-                    'tag' => $model->is_active ? 'success' : 'secondary',
-                    'options' => [
-                        [
-                            'label' => 'Activate',
-                            'tag' => 'success',
-                            'route' => 'activate',
-                            'verb' => 'patch',
-                        ],
-                        [
-                            'label' => 'Deactivate',
-                            'tag' => 'secondary',
-                            'route' => 'deactivate',
-                            'verb' => 'patch',
-                        ],
-                    ]
-                ]);
-            })
+//            ->editColumn('is_active', function ($model) {
+//                return $this->renderDropdownCol($model, [
+//                    'label' => $model->is_active ? 'Active' : 'Inactive',
+//                    'tag' => $model->is_active ? 'success' : 'secondary',
+//                    'options' => [
+//                        [
+//                            'label' => 'Activate',
+//                            'tag' => 'success',
+//                            'route' => 'activate',
+//                            'verb' => 'patch',
+//                        ],
+//                        [
+//                            'label' => 'Deactivate',
+//                            'tag' => 'secondary',
+//                            'route' => 'deactivate',
+//                            'verb' => 'patch',
+//                        ],
+//                    ]
+//                ]);
+//            })
 
             ->editColumn('created_at', function ($user) {
                 return $user->created_at->format('Y-m-d H:i P');
@@ -100,7 +100,7 @@ class UsersDataTable extends AdminDataTable
                 return $model->updated_at->format('Y-m-d H:i P');
             })
 
-            ->rawColumns(['selected', 'actions', 'is_active', 'status'], $mergeDefaults = true);
+            ->rawColumns(['selected', 'actions', 'is_active'], $mergeDefaults = true);
     }
 
     /**
@@ -117,8 +117,8 @@ class UsersDataTable extends AdminDataTable
             Column::make('email')->search('email'),
             Column::make('created_at'),
             Column::make('updated_at'),
-            $this->defineButtonColumn('status'),
-            $this->defineDropdownColumn('is_active', 'Status'),
+            $this->defineButtonColumn('is_active', 'Status'),
+//            $this->defineDropdownColumn('is_active', 'Status'),
             $this->defineActionsColumn(),
         ];
     }

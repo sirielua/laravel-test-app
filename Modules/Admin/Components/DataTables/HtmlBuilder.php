@@ -19,10 +19,10 @@ class HtmlBuilder extends Builder
     public function __construct(Repository $config, Factory $view, BaseHtmlBuilder $html)
     {
         $this->setDefaults();
-        
+
         parent::__construct($config, $view, $html);
     }
-    
+
     public function setDefaults()
     {
         $this->dom(
@@ -42,7 +42,7 @@ class HtmlBuilder extends Builder
                 .">"
             .">"
         );
-        
+
         $this->attributes['initComplete'] = "function () {
                 // Sorting and filtering
                     $('tr.sorter').before($('tr.search-filter'));
@@ -61,14 +61,14 @@ class HtmlBuilder extends Builder
                             });
                         }
                     });
-                
+
                 // Row Selection
                     var table = this.api().table().node();
                     $('#' + table.id + ' tbody').on( 'click', 'tr', function (event) {
                         if($(event.target).is('a, label, :input')) {
                             return true;
                         }
-                        
+
                         $(this).toggleClass('selected');
                         var checkBox = $(this).find('input[type=checkbox]');
                         checkBox.prop('checked', $(this).hasClass('selected') ? 'checked' : '');
@@ -81,7 +81,7 @@ class HtmlBuilder extends Builder
                             $(this).closest('tr').removeClass('selected');
                         }
                     });
-                    
+
                     $('#' + table.id + ' thead').on( 'click', 'input[type=checkbox]', function (event) {
                         var selectAll = $(this).is(':checked');
                         $('#' + table.id + ' tbody tr').each(function (i) {
@@ -96,7 +96,7 @@ class HtmlBuilder extends Builder
                     });
             }";
     }
-    
+
     /**
      * Generate DataTable's table html.
      *
@@ -109,15 +109,13 @@ class HtmlBuilder extends Builder
     {
         $this->setTableAttributes($attributes);
 
-        $th = $this->compileTableHeaders();
-        
         $htmlAttr = $this->html->attributes($this->tableAttributes);
-        
+
         $tableHtml = '<table ' . $htmlAttr . '>';
-        
+
         $sorterHtml = $drawSearch ? '<tr class="sorter">' . implode('', $this->compileTableSorterHeaders()) . '</tr>' : '';
         $searchHtml = $drawSearch ? '<tr class="search-filter">' . implode('', $this->compileTableSearhHeaders()) . '</tr>' : '';
-        
+
         $tableHtml .= '<thead>'.$searchHtml.$sorterHtml.'</thead>';
 
         if ($drawFooter) {
@@ -128,7 +126,7 @@ class HtmlBuilder extends Builder
 
         return new HtmlString($tableHtml);
     }
-    
+
     /**
      * Compile table headers and to support responsive extension.
      *
@@ -140,13 +138,13 @@ class HtmlBuilder extends Builder
         foreach ($this->collection->all() as $key => $row) {
             $searchable = $row['searchable'] && isset($row->search);
             $label = $searchable ? $row->search : $row['title'];
-            
+
             $search[] = '<th ' . ($searchable ? 'class="searchable" ' : '') . 'data-col-index="' . $key . '">' . $label . '</th>' ;
         }
 
         return $search;
     }
-    
+
     /**
      * Compile table search headers.
      *

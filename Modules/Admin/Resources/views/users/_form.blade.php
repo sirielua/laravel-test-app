@@ -28,7 +28,6 @@
         <label for="name" class="col-sm-2 col-form-label">Name</label>
         <div class="col-sm-10">
             <input name="name" value="{{ old('name', $model->name ?? '') }}"  id="name" placeholder="Name" type="text" class="form-control @error('name') is-invalid @enderror" />
-            <small class="form-text text-muted">Only .jpeg, .jpg , .png, .gif files allowed</small>
             @error('name')
                 <div class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -61,8 +60,8 @@
     <fieldset class="position-relative row form-group">
         <legend class="col-form-label col-sm-2">User status</legend>
         <div class="col-sm-10">
-            <div class="position-relative form-check"><label class="form-check-label"><input name="is_active" value="1" type="radio" class="form-check-input" {{ old('is_active', $model->is_active) == 1 ? 'checked' : '' }}> Active user</label></div>
-            <div class="position-relative form-check"><label class="form-check-label"><input name="is_active" value="0" type="radio" class="form-check-input" {{ old('is_active', $model->is_active) == 0 ? 'checked' : '' }}> Inactive user</label></div>
+            <div class="position-relative form-check"><label class="form-check-label"><input name="is_active" value="1" type="radio" class="form-check-input" {{ old('is_active', $model->is_active ?? 1) == 1 ? 'checked' : '' }}> Active user</label></div>
+            <div class="position-relative form-check"><label class="form-check-label"><input name="is_active" value="0" type="radio" class="form-check-input" {{ old('is_active', $model->is_active ?? 1) == 0 ? 'checked' : '' }}> Inactive user</label></div>
         </div>
     </fieldset>
 

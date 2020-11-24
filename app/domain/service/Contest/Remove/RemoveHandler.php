@@ -2,11 +2,11 @@
 
 namespace App\domain\service\Contest\Remove;
 
-use App\domain\entities\Cotest\Id;
+use App\domain\entities\Contest\Id;
 use App\domain\repositories\Contest\ContestRepository;
 use App\domain\dispatchers\EventDispatcher;
 
-class RemoveHandler extends CommandHandler
+class RemoveHandler
 {
     private $contests;
     private $dispatcher;

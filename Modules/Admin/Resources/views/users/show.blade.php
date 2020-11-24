@@ -40,7 +40,7 @@
                 <li class="list-group-item">
                     <h5 class="list-group-item-heading">Photo</h5>
                     @if ($model->photo)
-                        <img src = "{{ asset($model->photo) }}" />
+                        <img src = "{{ asset($model->photo) }}" style="max-width: 600px;" />
                     @else
                         <p class="list-group-item-text">No photo</p>
                     @endif
@@ -51,7 +51,7 @@
                         @if ($model->is_active)
                             <div class="mb-2 mr-2 badge badge-success">Active</div>
                         @else
-                            <div class="mb-2 mr-2 badge badge-danger">Inactive</div>
+                            <div class="mb-2 mr-2 badge badge-secondary">Inactive</div>
                         @endif
                     </p>
                 </li>

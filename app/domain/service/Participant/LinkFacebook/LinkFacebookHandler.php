@@ -5,7 +5,7 @@ namespace App\domain\service\Participan\LinkFacebook;
 use App\domain\repositories\Participant\ParticipantRepository;
 use App\domain\dispatchers\EventDispatcher;
 
-class LinkFacebookHandler implements CommandHandler
+class LinkFacebookHandler
 {
     private $participants;
     private $dispatcher;

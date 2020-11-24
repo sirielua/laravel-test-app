@@ -5,7 +5,7 @@ namespace App\domain\service\Contest\Activate;
 use App\domain\service\CommandTrait;
 use Assert\Assertion;
 
-class ActivateCommand extends Command
+class ActivateCommand
 {
     use CommandTrait;
 

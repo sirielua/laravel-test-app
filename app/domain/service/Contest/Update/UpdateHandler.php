@@ -4,8 +4,9 @@ namespace App\domain\service\Contest\Update;
 
 use App\domain\repositories\Contest\ContestRepository;
 use App\domain\dispatchers\EventDispatcher;
-use App\domain\entities\Cotest\Id;
-use App\domain\entities\Cotest\Status;
+use App\domain\entities\Contest\Id;
+use App\domain\entities\Contest\Description;
+use App\domain\entities\Contest\Banner;
 
 class UpdateHandler
 {
@@ -25,7 +26,7 @@ class UpdateHandler
     {
         $contest = $this->contests->get(new Id($command->id));
 
-        $contest->changeStatus($command->dto->getIsActive() ? new Status(Status::ACTIVE) : new Status(Status::INACTIVE));
+        $command->dto->getIsActive() ? $contest->activate() : $contest->deactivate();
         $contest->changeDescription(new Description(
             $command->dto->getHeadline(),
             $command->dto->getSubheadline() ?? null,

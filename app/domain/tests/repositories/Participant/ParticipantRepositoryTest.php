@@ -2,8 +2,6 @@
 
 namespace App\domain\tests\repositories\Participant;
 
-use PHPUnit\Framework\TestCase;
-
 use App\domain\tests\entities\Participant\ParticipantBuilder;
 use App\domain\entities\Participant\Participant;
 use App\domain\entities\Participant\Id;
@@ -12,7 +10,7 @@ use App\domain\entities\Participant\FacebookId;
 use App\domain\repositories\NotFoundException;
 use App\domain\repositories\DuplicateKeyException;
 
-abstract class BaseParticipantRepositoryTest extends TestCase
+trait ParticipantRepositoryTest
 {
     protected static $repository;
 

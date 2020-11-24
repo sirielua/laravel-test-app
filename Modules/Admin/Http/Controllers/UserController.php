@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-use Modules\Admin\Entities\DataTables\UsersDataTable;
+use Modules\Admin\Entities\DataTables\UserDataTable;
 use Modules\Admin\Services\User\UserService;
 
 class UserController extends Controller
@@ -15,10 +15,10 @@ class UserController extends Controller
      * Display a listing of the resource.
      *
      * @param Request $request
-     * @param UsersDataTable $dataTable
+     * @param UserDataTable $dataTable
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, UsersDataTable $dataTable)
+    public function index(Request $request, UserDataTable $dataTable)
     {
         if($request->ajax() && $request->wantsJson()) {
             return $dataTable->ajax();
@@ -142,7 +142,7 @@ class UserController extends Controller
     public function destroy(Request $request, UserService $Service, $id)
     {
         $model = $Service->find($id) ?: abort(404);
-        $Service->delete($model->id, $request->all());
+        $Service->delete($model->id);
 
         return $request->wantsJson()
             ? new Response('', 200)

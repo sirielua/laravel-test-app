@@ -5,7 +5,7 @@ namespace App\domain\service\Contest\Deactivate;
 use App\domain\service\CommandTrait;
 use Assert\Assertion;
 
-class DeactivateCommand extends Command
+class DeactivateCommand
 {
     use CommandTrait;
 

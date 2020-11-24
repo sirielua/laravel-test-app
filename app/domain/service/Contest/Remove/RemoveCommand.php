@@ -5,7 +5,7 @@ namespace App\domain\service\Contest\Remove;
 use App\domain\service\CommandTrait;
 use Assert\Assertion;
 
-class RemoveCommand extends Command
+class RemoveCommand
 {
     use CommandTrait;
 

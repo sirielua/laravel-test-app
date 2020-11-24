@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -13,7 +13,7 @@ class User extends Authenticatable
     const STATUS_IS_NOT_ACTIVE = 0;
     const STATUS_IS_ACTIVE = 1;
 
-    
+
     /**
      * The model's default values for attributes.
      *

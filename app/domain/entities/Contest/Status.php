@@ -7,7 +7,7 @@ use Assert\Assertion;
 class Status
 {
     const ACTIVE = 1;
-    const INACTIVE = 2;
+    const INACTIVE = 0;
 
     private $status;
 

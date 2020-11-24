@@ -16,6 +16,11 @@ class Id
         $this->id = $id;
     }
 
+    public function __toString()
+    {
+        return $this->id;
+    }
+
     public static function next(): self
     {
         return new static(Uuid::uuid4()->toString());

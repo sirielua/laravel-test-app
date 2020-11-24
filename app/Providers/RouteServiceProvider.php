@@ -7,10 +7,9 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 use Illuminate\Support\Facades\Route;
 
 use Illuminate\Contracts\Routing\UrlGenerator;
-use Illuminate\Support\Str;
 
 /**
- * Provides correct routes and urls when launched 
+ * Provides correct routes and urls when launched
  * in production enviroment (App::environment('production'))
  * when working from subfolder.
  * APP_DIR enviroment variable should be specified for correct behavior
@@ -43,20 +42,20 @@ class RouteServiceProvider extends ServiceProvider
         if($subdir = $this->getSubDir()) {
             $this->attuneUrlGenerationFromSubdir($subdir);
         }
-        
+
         parent::boot();
     }
 
     /**
      * Returns installation subdirectory if any
-     * 
+     *
      * @return str || null
      */
     protected function getSubDir()
     {
         return App::environment('production') ? env('APP_DIR', null) : null;
     }
-    
+
     protected function attuneUrlGenerationFromSubdir($subdir)
     {
         $urlGenerator = app(UrlGenerator::class);
@@ -68,7 +67,7 @@ class RouteServiceProvider extends ServiceProvider
             return $path;
         });
     }
-    
+
     /**
      * Define the routes for the application.
      *
@@ -80,8 +79,8 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapWebRoutes();
     }
 
-    
-    
+
+
     /**
      * Define the "web" routes for the application.
      *
@@ -111,5 +110,5 @@ class RouteServiceProvider extends ServiceProvider
             ->namespace($this->namespace)
             ->group(base_path('routes/api.php'));
     }
-    
+
 }

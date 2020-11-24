@@ -6,7 +6,7 @@ use App\domain\service\CommandTrait;
 use App\domain\service\Contest\dto\ContestDto;
 use Assert\Assertion;
 
-class UpdateCommand implements Command
+class UpdateCommand
 {
     use CommandTrait;
 

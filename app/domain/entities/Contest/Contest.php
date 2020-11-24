@@ -10,6 +10,7 @@ class Contest implements AggregateRoot
     use EventTrait;
 
     private $id;
+    private $status;
     private $description;
 
     public function __construct(Id $id, Status $status, Description $description)

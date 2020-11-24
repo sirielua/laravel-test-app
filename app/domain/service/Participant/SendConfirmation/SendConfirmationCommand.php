@@ -5,7 +5,7 @@ namespace App\domain\service\Participant\SendConfirmation;
 use App\domain\service\CommandTrait;
 use Assert\Assertion;
 
-class SendConfirmationCommand extends Command
+class SendConfirmationCommand
 {
     use CommandTrait;
 

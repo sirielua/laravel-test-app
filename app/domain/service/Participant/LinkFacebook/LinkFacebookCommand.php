@@ -5,7 +5,7 @@ namespace App\domain\service\Participant\LinkFacebook;
 use App\domain\service\CommandTrait;
 use Assert\Assertion;
 
-class LinkFacebookCommand extends Command
+class LinkFacebookCommand
 {
     use CommandTrait;
 

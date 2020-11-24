@@ -5,7 +5,7 @@ namespace App\domain\service\Participant\UpdateReferralCount;
 use App\domain\service\CommandTrait;
 use Assert\Assertion;
 
-class UpdateReferralCountCommand extends Command
+class UpdateReferralCountCommand
 {
     use CommandTrait;
 

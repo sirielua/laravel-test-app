@@ -55,7 +55,7 @@ return [
     'url' => env('APP_URL', 'http://localhost'),
 
     'asset_url' => (env('ASSET_URL', null) ?? env('APP_DIR') ? '/'.env('APP_DIR') : null) . '/storage',
-    
+
     'mix_url' => env('MIX_URL', null) ?? env('APP_DIR') ? '/'.env('APP_DIR') : null,
 
     /*
@@ -171,13 +171,13 @@ return [
         /*
          * Application Service Providers...
          */
-        //App\Providers\HelperServiceProvider::class,
         App\Providers\AppServiceProvider::class,
+        App\Providers\SchemaServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        
+
     ],
 
     /*

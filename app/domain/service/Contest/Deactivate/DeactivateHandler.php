@@ -2,11 +2,11 @@
 
 namespace App\domain\service\Contest\Deactivate;
 
-use App\domain\entities\Cotest\Id;
+use App\domain\entities\Contest\Id;
 use App\domain\repositories\Contest\ContestRepository;
 use App\domain\dispatchers\EventDispatcher;
 
-class DeactivateHandler extends CommandHandler
+class DeactivateHandler
 {
     private $contests;
     private $dispatcher;

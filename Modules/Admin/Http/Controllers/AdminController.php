@@ -3,10 +3,9 @@
 namespace Modules\Admin\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-use Modules\Admin\Entities\DataTables\UsersDataTable;
+use Modules\Admin\Entities\DataTables\UserDataTable;
 
 class AdminController extends Controller
 {
@@ -14,7 +13,7 @@ class AdminController extends Controller
      * Display a listing of the resource.
      * @return Response
      */
-    public function index(Request $request, UsersDataTable $dataTable)
+    public function index(UserDataTable $dataTable)
     {
         return view('admin::index', ['dataTable' => $dataTable->html()]);
     }

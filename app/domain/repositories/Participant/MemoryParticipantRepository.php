@@ -16,30 +16,36 @@ class MemoryParticipantRepository implements ParticipantRepository
 
     public function get(Id $id): Participant
     {
-        if (!isset($this->items[$id->getId()])) {
+        if (!isset($this->items[(string)$id])) {
             throw new NotFoundException('Participant not found.');
         }
 
-        return clone $this->items[$id->getId()];
+        return clone $this->items[(string)$id];
     }
 
     public function add(Participant $participant): void
     {
-        if (isset($this->items[$participant->getId()->getId()])) {
+        if (isset($this->items[(string)$participant->getId()])) {
             throw new DuplicateKeyException('Participant already exists');
         }
-        $this->items[$participant->getId()->getId()] = clone $participant;
+
+        $this->items[(string)$participant->getId()] = clone $participant;
     }
+
 
     public function save(Participant $participant): void
     {
-        $this->items[$participant->getId()->getId()] = clone $participant;
+        if (!isset($this->items[(string)$participant->getId()])) {
+            throw new NotFoundException('Participant not found.');
+        }
+
+        $this->items[(string)$participant->getId()] = clone $participant;
     }
 
     public function remove(Participant $participant): void
     {
-        if (isset($this->items[$participant->getId()->getId()])) {
-            unset($this->items[$participant->getId()->getId()]);
+        if (isset($this->items[(string)$participant->getId()])) {
+            unset($this->items[(string)$participant->getId()]);
         }
     }
 

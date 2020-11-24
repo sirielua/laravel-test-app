@@ -8,5 +8,5 @@ table.dataTable tbody>tr.selected .btn, table.dataTable tbody>tr>.selected .btn 
 }
 
 table.dataTable {
-    margin-bottom: 30px !important;
+    width: 100% !important;
 }

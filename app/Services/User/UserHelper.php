@@ -2,7 +2,7 @@
 
 namespace App\Services\User;
 
-use App\User;
+use App\Models\User;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;

@@ -2,8 +2,6 @@
 
 namespace App\domain\tests\repositories\Contest;
 
-use PHPUnit\Framework\TestCase;
-
 use App\domain\tests\entities\Contest\ContestBuilder;
 use App\domain\entities\Contest\Contest;
 use App\domain\entities\Contest\Id;
@@ -12,7 +10,7 @@ use App\domain\entities\Contest\Banner;
 use App\domain\repositories\NotFoundException;
 use App\domain\repositories\DuplicateKeyException;
 
-abstract class BaseContestRepositoryTest extends TestCase
+trait ContestRepositoryTest
 {
     protected static $repository;
 
