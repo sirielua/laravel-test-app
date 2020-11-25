@@ -18,20 +18,6 @@ class AdminServiceProvider extends ServiceProvider
     protected $moduleNameLower = 'admin';
 
     /**
-     * Boot the application events.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        $this->registerTranslations();
-        $this->registerConfig();
-        $this->registerViews();
-        $this->registerFactories();
-        $this->loadMigrationsFrom(module_path($this->moduleName, 'Database/Migrations'));
-    }
-
-    /**
      * Register the service provider.
      *
      * @return void
@@ -44,13 +30,29 @@ class AdminServiceProvider extends ServiceProvider
             \Yajra\DataTables\ButtonsServiceProvider::class,
 //            \Yajra\DataTables\HtmlServiceProvider::class,
             DataTablesHtmlServiceProvider::class,
+            BladeComponentsServiceProvider::class,
         ];
-        
+
         $app = $this->app;
-        
+
         array_walk($providers, function($provider) use ($app) {
             $app->register($provider);
         });
+    }
+
+    /**
+     * Boot the application events.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->bootConfig();
+        $this->bootViews();
+        $this->bootTranslations();
+        $this->bootFactories();
+
+        $this->loadMigrationsFrom(module_path($this->moduleName, 'Database/Migrations'));
     }
 
     /**
@@ -58,11 +60,12 @@ class AdminServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function registerConfig()
+    protected function bootConfig()
     {
         $this->publishes([
             module_path($this->moduleName, 'Config/config.php') => config_path($this->moduleNameLower . '.php'),
         ], 'config');
+
         $this->mergeConfigFrom(
             module_path($this->moduleName, 'Config/config.php'), $this->moduleNameLower
         );
@@ -73,7 +76,7 @@ class AdminServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function registerViews()
+    public function bootViews()
     {
         $viewPath = resource_path('views/modules/' . $this->moduleNameLower);
 
@@ -86,12 +89,23 @@ class AdminServiceProvider extends ServiceProvider
         $this->loadViewsFrom(array_merge($this->getPublishableViewPaths(), [$sourcePath]), $this->moduleNameLower);
     }
 
+    private function getPublishableViewPaths(): array
+    {
+        $paths = [];
+        foreach (\Config::get('view.paths') as $path) {
+            if (is_dir($path . '/modules/' . $this->moduleNameLower)) {
+                $paths[] = $path . '/modules/' . $this->moduleNameLower;
+            }
+        }
+        return $paths;
+    }
+
     /**
      * Register translations.
      *
      * @return void
      */
-    public function registerTranslations()
+    public function bootTranslations()
     {
         $langPath = resource_path('lang/modules/' . $this->moduleNameLower);
 
@@ -107,31 +121,10 @@ class AdminServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function registerFactories()
+    public function bootFactories()
     {
         if (! app()->environment('production') && $this->app->runningInConsole()) {
             app(Factory::class)->load(module_path($this->moduleName, 'Database/factories'));
         }
-    }
-
-    /**
-     * Get the services provided by the provider.
-     *
-     * @return array
-     */
-    public function provides()
-    {
-        return [];
-    }
-
-    private function getPublishableViewPaths(): array
-    {
-        $paths = [];
-        foreach (\Config::get('view.paths') as $path) {
-            if (is_dir($path . '/modules/' . $this->moduleNameLower)) {
-                $paths[] = $path . '/modules/' . $this->moduleNameLower;
-            }
-        }
-        return $paths;
     }
 }
