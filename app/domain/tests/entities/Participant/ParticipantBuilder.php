@@ -18,7 +18,7 @@ class ParticipantBuilder
     private $name;
     private $phone;
     private $referralId;
-    private $referralCount = 0;
+    private $referralQuantity = 0;
     private $facebookId;
     private $confirmationCode = 'confirmation-code';
     private $isUnconfirmed;
@@ -29,7 +29,7 @@ class ParticipantBuilder
         $this->contestId = ContestId::next();
         $this->name = new Name('Sarah', 'Connor');
         $this->phone = new Phone('1234567890');
-        $this->referralCount = 0;
+        $this->referralQuantity = 0;
         $this->facebookId = new FacebookId('facebook-id');
     }
 

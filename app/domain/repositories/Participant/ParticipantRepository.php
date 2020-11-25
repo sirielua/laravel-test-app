@@ -19,5 +19,5 @@ interface ParticipantRepository
 
     public function existsByPhone(Phone $phone): bool;
 
-    public function getReferralCount(Id $id): int;
+    public function getReferralQuantity(Id $id): int;
 }

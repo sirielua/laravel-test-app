@@ -5,7 +5,6 @@ namespace App\domain\repositories\Participant;
 use App\domain\entities\Participant\Participant;
 use App\domain\entities\Participant\Id;
 use App\domain\entities\Participant\Phone;
-use App\domain\entities\Contest\Id as ContestId;
 
 use App\domain\repositories\NotFoundException;
 use App\domain\repositories\DuplicateKeyException;
@@ -60,16 +59,24 @@ class MemoryParticipantRepository implements ParticipantRepository
         return false;
     }
 
-    public function getReferralCount(Id $id): int
+    public function getReferralQuantity(Id $id): int
     {
         $count = 0;
 
         foreach ($this->items as $participant) {
-            if ($participant->getReferralId()->isEqualTo($id)) {
+            if (!$referralId = $participant->getReferralId()) {
+                continue;
+            }
+
+            if (!$participant->getIsRegistrationConfirmed()) {
+                continue;
+            }
+
+            if ($referralId->isEqualTo($id)) {
                 $count++;
             }
         }
 
-        return $ount;
+        return $count;
     }
 }

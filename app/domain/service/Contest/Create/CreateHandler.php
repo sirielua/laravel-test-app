@@ -22,7 +22,7 @@ class CreateHandler
         $this->dispatcher = $dispatcher;
     }
 
-    public function handle(CreateCommand $command)
+    public function handle(CreateCommand $command): Id
     {
         $contest = new Contest(
             Id::next(),

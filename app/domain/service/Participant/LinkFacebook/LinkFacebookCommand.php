@@ -10,16 +10,23 @@ class LinkFacebookCommand
     use CommandTrait;
 
     private $id;
+    private $facebookId;
 
-    public function __construct(string $id)
+    public function __construct(string $id, string $facebookId)
     {
         Assertion::notEmpty($id);
 
         $this->id = $id;
+        $this->facebookId = $facebookId;
     }
 
     public function getId(): string
     {
         return $this->id;
+    }
+
+    public function getFacebookId(): string
+    {
+        return $this->facebookId;
     }
 }

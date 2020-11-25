@@ -4,7 +4,7 @@ namespace App\domain\entities\Participant\events;
 
 use App\domain\entities\Participant\Id;
 
-class ParticipantReferralCountChanged
+class ParticipantReferralQuantityChanged
 {
     private $id;
 

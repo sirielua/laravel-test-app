@@ -2,15 +2,13 @@
 
 namespace App\domain\service\Participant\SendConfirmation;
 
-use App\domain\components\ConfirmationCodeGenerator\ConfirmationCodeGenerator;
 use App\domain\components\RegistrationNotifier\RegistrationNotifier;
 use App\domain\repositories\Participant\ParticipantRepository;
 use App\domain\dispatchers\EventDispatcher;
 use App\domain\entities\Participant\Id;
 
-class SendConfirmationCommand
+class SendConfirmationHandler
 {
-    private $confirmationCodeGenerator;
     private $notifier;
     private $participants;
     private $dispatcher;
@@ -19,13 +17,11 @@ class SendConfirmationCommand
     private $participant;
 
     public function __construct(
-        ConfirmationCodeGenerator $confirmationCodeGenerator,
         RegistrationNotifier $notifier,
         ParticipantRepository $participants,
         EventDispatcher $dispatcher,
         $attemptsAllowed = 2
     ) {
-        $this->confirmationCodeGenerator = $confirmationCodeGenerator;
         $this->notifier = $notifier;
         $this->participants = $participants;
         $this->dispatcher = $dispatcher;
@@ -40,6 +36,7 @@ class SendConfirmationCommand
     {
         $this->initParticipant($command);
 
+        $this->checkParticipantIsNotConfirmed();
         $this->checkAttempts();
         $this->notifyAboutRegistration();
         $this->persist();
@@ -47,7 +44,15 @@ class SendConfirmationCommand
 
     private function initParticipant(SendConfirmationCommand $command): void
     {
-        $this->participant = $this->participants->get(new Id($command->getId()));
+        $id = new Id($command->getId());
+        $this->participant = $this->participants->get($id);
+    }
+
+    private function checkParticipantIsNotConfirmed()
+    {
+        if ($this->participant->getIsRegistrationConfirmed()) {
+            throw new exceptions\OnlyUnconfirmedParticipantsCouldBeNotifiedException('Registration already confirmed');
+        }
     }
 
     private function checkAttempts(): void
@@ -60,7 +65,6 @@ class SendConfirmationCommand
 
     private function notifyAboutRegistration(): void
     {
-        $this->participant->setRegistrationConfirmationCode($this->confirmationCodeGenerator->generate());
         $this->notifier->notify($this->participant);
         $this->participant->sendRegistrationConfirmationMessage();
     }

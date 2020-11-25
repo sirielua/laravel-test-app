@@ -5,6 +5,8 @@ namespace App\domain\service\Participant\ForceConfirmRegistration;
 use App\domain\repositories\Participant\ParticipantRepository;
 use App\domain\dispatchers\EventDispatcher;
 
+use App\domain\entities\Participant\Id;
+
 class ForceConfirmRegistrationHandler
 {
     private $participants;
@@ -21,11 +23,10 @@ class ForceConfirmRegistrationHandler
     /**
      * @throws \app\repositories\NotFoundExceptionNotFoundException
      */
-    public function run(ForceConfirmRegistrationCommand $command): void
+    public function handle(ForceConfirmRegistrationCommand $command): void
     {
         $this->loadParticipant($command);
-
-        $this->confirmRegistration();
+        $this->confirmRegistrationIfNotConfirmed();
         $this->persist();
     }
 
@@ -35,9 +36,12 @@ class ForceConfirmRegistrationHandler
         $this->participant = $this->participants->get($id);
     }
 
-    private function confirmRegistration(): void
+    private function confirmRegistrationIfNotConfirmed(): void
     {
-        $this->participant->confirmRegistration();
+        if (!$this->participant->getIsRegistrationConfirmed()) {
+            $this->participant->registerConfirmationAttempt();
+            $this->participant->confirmRegistration();
+        }
     }
 
     private function persist(): void

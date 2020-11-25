@@ -1,11 +1,13 @@
 <?php
 
-namespace App\domain\service\Participant\UpdateReferralCount;
+namespace App\domain\service\Participant\UpdateReferralQuantity;
 
 use App\domain\repositories\Participant\ParticipantRepository;
 use App\domain\dispatchers\EventDispatcher;
 
-class UpdateReferralCountHandler
+use App\domain\entities\Participant\Id;
+
+class UpdateReferralQuantityHandler
 {
     private $participants;
     private $dispatcher;
@@ -21,24 +23,24 @@ class UpdateReferralCountHandler
     /**
      * @throws \app\repositories\NotFoundExceptionNotFoundException
      */
-    public function handle(UpdateReferralCountCommand $command): void
+    public function handle(UpdateReferralQuantityCommand $command): void
     {
         $this->loadParticipant($command);
 
-        $this->updateReferralCount();
+        $this->updateReferralQuantity();
         $this->persist();
     }
 
-    private function loadParticipant(UpdateReferralCountCommand $command): void
+    private function loadParticipant(UpdateReferralQuantityCommand $command): void
     {
         $id = new Id($command->id);
         $this->participant = $this->participants->get($id);
     }
 
-    private function updateReferralCount(): void
+    private function updateReferralQuantity(): void
     {
-        $count = $this->participants->getReferralCount($this->participant->getId());
-        $this->participant->setReferralCount($count);
+        $count = $this->participants->getReferralQuantity($this->participant->getId());
+        $this->participant->setReferralQuantity($count);
     }
 
     private function persist(): void

@@ -17,7 +17,7 @@ class Participant implements AggregateRoot
     private $phone;
     private $registrationData;
     private $referralId;
-    private $referralCount;
+    private $referralQuantity;
     private $facebookId;
 
     public function __construct(Id $id, ContestId $contestId, Name $name, Phone $phone, RegistrationData $registrationData, Id $referralId = null)
@@ -28,7 +28,7 @@ class Participant implements AggregateRoot
         $this->phone = $phone;
         $this->registrationData = $registrationData;
         $this->referralId = $referralId;
-        $this->referralCount = 0;
+        $this->referralQuantity = 0;
 
         $this->addEvent(new events\ParticipantRegistered($this->id));
     }
@@ -71,18 +71,11 @@ class Participant implements AggregateRoot
         $this->addEvent(new events\ParticipantRegistrationConfirmed($this->id));
     }
 
-    public function incrementReferralCount(): void
+    public function setReferralQuantity(int $count): void
     {
-        $this->referralCount++;
+        $this->referralQuantity = $count;
 
-        $this->addEvent(new events\ParticipantReferralCountChanged($this->id));
-    }
-
-    public function setReferralCount(int $count): void
-    {
-        $this->referralCount = $count;
-
-        $this->addEvent(new events\ParticipantReferralCountChanged($this->id));
+        $this->addEvent(new events\ParticipantReferralQuantityChanged($this->id));
     }
 
     public function attachFacebookId(FacebookId $facebookId): void
@@ -127,9 +120,9 @@ class Participant implements AggregateRoot
         return $this->referralId;
     }
 
-    public function getReferralCount(): int
+    public function getReferralQuantity(): int
     {
-        return $this->referralCount;
+        return $this->referralQuantity;
     }
 
     public function getRegistrationData(): RegistrationData

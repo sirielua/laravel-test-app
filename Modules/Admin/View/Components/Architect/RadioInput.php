@@ -4,10 +4,12 @@ namespace Modules\Admin\View\Components\Architect;
 
 use Illuminate\View\Component;
 
-class TextInput extends Component
+class RadioInput extends Component
 {
     public $label;
     public $attribute;
+    public $options;
+    public $default;
     public $model;
     public $hint;
 
@@ -16,10 +18,12 @@ class TextInput extends Component
      *
      * @return void
      */
-    public function __construct($label, $attribute, $model = null, $hint = null)
+    public function __construct($label, $attribute, $options = [], $default = null, $model = null, $hint = null)
     {
         $this->label = $label;
         $this->attribute = $attribute;
+        $this->options = $options;
+        $this->default = $default;
         $this->model = $model;
         $this->hint = $hint;
     }
@@ -31,6 +35,6 @@ class TextInput extends Component
      */
     public function render()
     {
-        return view('admin::components.architect.text-input');
+        return view('admin::components.architect.radio-input');
     }
 }

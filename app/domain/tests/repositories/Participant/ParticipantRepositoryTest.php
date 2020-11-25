@@ -34,7 +34,7 @@ trait ParticipantRepositoryTest
         $this->assertEquals($fetched->getPhone(), $created->getPhone());
         $this->assertEquals($fetched->getRegisteredAt(), $created->getRegisteredAt());
         $this->assertEquals($fetched->getReferralId(), $created->getReferralId());
-        $this->assertEquals($fetched->getReferralCount(), $created->getReferralCount());
+        $this->assertEquals($fetched->getReferralQuantity(), $created->getReferralQuantity());
         $this->assertEquals($fetched->getIsRegistrationConfirmed(), $created->getIsRegistrationConfirmed());
         $this->assertEquals($fetched->getFacebookId(), $created->getFacebookId());
 
@@ -72,7 +72,7 @@ trait ParticipantRepositoryTest
         $participant->sendRegistrationConfirmationMessage();
         $participant->registerConfirmationAttempt();
         $participant->confirmRegistration();
-        $participant->setReferralCount(5);
+        $participant->setReferralQuantity(5);
         $participant->attachFacebookId(new FacebookId(\uniqid()));
 
         self::$repository->save($participant);
@@ -118,10 +118,43 @@ trait ParticipantRepositoryTest
         $this->assertTrue(self::$repository->existsByPhone($phone));
     }
 
-    public function testDontExistsByPhoneAndContest(): void
+    public function testDontExistsByPhone(): void
     {
         $phone = new Phone('non-existing-number');
 
         $this->assertFalse(self::$repository->existsByPhone($phone));
+    }
+
+    public function testGetReferralQuantity(): void
+    {
+        $participant = (new ParticipantBuilder())
+            ->withId($referralId = Id::next())
+            ->build();
+        self::$repository->add($participant);
+
+        for ($i = 0; $i < 5; $i++) {
+            $referral = (new ParticipantBuilder())
+                ->withReferralId($referralId)
+                ->build();
+            self::$repository->add($referral);
+        }
+
+        $this->assertEquals(5, self::$repository->getReferralQuantity($referralId));
+    }
+
+    public function testUnconfirmedReferralsDoesNotQuantity(): void
+    {
+        $participant = (new ParticipantBuilder())
+            ->withId($referralId = Id::next())
+            ->build();
+        self::$repository->add($participant);
+
+        $unconfirmedReferral = (new ParticipantBuilder())
+                ->unconfirmed()
+                ->withReferralId($referralId)
+                ->build();
+        self::$repository->add($unconfirmedReferral);
+
+        $this->assertEquals(0, self::$repository->getReferralQuantity($referralId));
     }
 }

@@ -11,10 +11,6 @@ class DummyRegistrationNotifier implements RegistrationNotifier
      */
     public function notify(Participant $participant): void
     {
-        if ($participant->getIsRegistrationConfirmed()) {
-            throw new exceptions\FailedToNotifyException('Registration already confirmed.');
-        }
-
         // do nothing
     }
 }

@@ -4,24 +4,18 @@ namespace Modules\Admin\View\Components\Architect;
 
 use Illuminate\View\Component;
 
-class TextInput extends Component
+class Submit extends Component
 {
     public $label;
-    public $attribute;
-    public $model;
-    public $hint;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($label, $attribute, $model = null, $hint = null)
+    public function __construct($label = 'Submit')
     {
         $this->label = $label;
-        $this->attribute = $attribute;
-        $this->model = $model;
-        $this->hint = $hint;
     }
 
     /**
@@ -31,6 +25,6 @@ class TextInput extends Component
      */
     public function render()
     {
-        return view('admin::components.architect.text-input');
+        return view('admin::components.architect.submit');
     }
 }

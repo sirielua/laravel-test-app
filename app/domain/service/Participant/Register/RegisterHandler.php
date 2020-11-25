@@ -2,6 +2,7 @@
 
 namespace App\domain\service\Participant\Register;
 
+use App\domain\components\ConfirmationCodeGenerator\ConfirmationCodeGenerator;
 use App\domain\repositories\Participant\ParticipantRepository;
 use App\domain\dispatchers\EventDispatcher;
 
@@ -28,12 +29,14 @@ class RegisterHandler
         $this->dispatcher = $dispatcher;
     }
 
-    public function handle(RegisterCommand $command): void
+    public function handle(RegisterCommand $command): Id
     {
         $this->initParticipant($command);
 
         $this->guardPhoneIsUnique();
         $this->persist();
+
+        return $this->participant->getId();
     }
 
     private function initParticipant(RegisterCommand $command): void
@@ -51,14 +54,14 @@ class RegisterHandler
                 new \DateTimeImmutable(), // registered at
                 $this->confirmationCodeGenerator->generate(), // confirmation code
             ),
-            $command->getReferralId() ? new Id($command->getContestId()) : null
+            $command->getReferralId() ? new Id($command->getReferralId()) : null
         );
     }
 
     private function guardPhoneIsUnique(): void
     {
         if ($this->participants->existsByPhone($this->participant->getPhone())) {
-            throw new \DomainException('This phone already registered');
+            throw new exceptions\PhoneAlreadyRegisteredException('This phone already registered');
         }
     }
 

@@ -4,11 +4,13 @@ namespace Modules\Admin\View\Components\Architect;
 
 use Illuminate\View\Component;
 
-class TextInput extends Component
+class PasswordInput extends Component
 {
     public $label;
     public $attribute;
     public $model;
+    public $confirmed;
+    public $confirmedLabel;
     public $hint;
 
     /**
@@ -16,11 +18,13 @@ class TextInput extends Component
      *
      * @return void
      */
-    public function __construct($label, $attribute, $model = null, $hint = null)
+    public function __construct($label, $attribute, $model = null, $confirmed = true, $confirmedLabel = null, $hint = null)
     {
         $this->label = $label;
         $this->attribute = $attribute;
         $this->model = $model;
+        $this->confirmed = $confirmed;
+        $this->confirmedLabel = $confirmedLabel ?? 'Confirm '.$label;
         $this->hint = $hint;
     }
 
@@ -31,6 +35,6 @@ class TextInput extends Component
      */
     public function render()
     {
-        return view('admin::components.architect.text-input');
+        return view('admin::components.architect.password-input');
     }
 }

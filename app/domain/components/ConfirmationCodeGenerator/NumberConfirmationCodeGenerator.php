@@ -22,6 +22,6 @@ class NumberConfirmationCodeGenerator implements ConfirmationCodeGenerator
         for ($i = 0; $i < 4; $i++) {
             $code .= \rand(0, 9);
         }
-        return new self($code);
+        return $code;
     }
 }

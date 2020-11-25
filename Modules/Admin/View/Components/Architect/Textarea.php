@@ -4,7 +4,7 @@ namespace Modules\Admin\View\Components\Architect;
 
 use Illuminate\View\Component;
 
-class TextInput extends Component
+class Textarea extends Component
 {
     public $label;
     public $attribute;
@@ -31,6 +31,6 @@ class TextInput extends Component
      */
     public function render()
     {
-        return view('admin::components.architect.text-input');
+        return view('admin::components.architect.textarea');
     }
 }

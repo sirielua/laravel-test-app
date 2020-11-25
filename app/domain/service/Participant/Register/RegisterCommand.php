@@ -9,19 +9,29 @@ class RegisterCommand
 {
     use CommandTrait;
 
+    private $contestId;
     private $firstName;
     private $lastName;
     private $phone;
+    private $referralId;
 
-    public function __construct($firstName, $lastName, $phone)
+    public function __construct($contestId, $firstName, $lastName, $phone, $referralId = null)
     {
+        Assertion::notEmpty($contestId);
         Assertion::notEmpty($firstName);
         Assertion::notEmpty($lastName);
         Assertion::notEmpty($phone);
 
+        $this->contestId = $contestId;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->phone = $phone;
+        $this->referralId = $referralId;
+    }
+
+    public function getContestId()
+    {
+        return $this->contestId;
     }
 
     public function getFirstName(): string
@@ -37,5 +47,10 @@ class RegisterCommand
     public function getPhone(): string
     {
         return $this->phone;
+    }
+
+    public function getReferralId()
+    {
+        return $this->referralId;
     }
 }

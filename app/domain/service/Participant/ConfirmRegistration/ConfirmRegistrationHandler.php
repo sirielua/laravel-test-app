@@ -4,32 +4,29 @@ namespace App\domain\service\Participant\ConfirmRegistration;
 
 use App\domain\repositories\Participant\ParticipantRepository;
 use App\domain\dispatchers\EventDispatcher;
+use App\domain\entities\Participant\Id;
 
 class ConfirmRegistrationHandler
 {
     private $participants;
     private $dispatcher;
-    private $attemptsAllowed;
 
     private $participant;
 
-    public function __construct(ParticipantRepository $participants, EventDispatcher $dispatcher, $attemptsAllowed = 10)
+    public function __construct(ParticipantRepository $participants, EventDispatcher $dispatcher)
     {
         $this->participants = $participants;
         $this->dispatcher = $dispatcher;
-        $this->attemptsAllowed = $attemptsAllowed;
     }
 
     /**
      * @throws \app\repositories\NotFoundException
-     * @throws exceptions\NoAttemptsLeftException
      * @throws exceptions\InvalidConfirmationCodeException
      */
     public function handle(ConfirmRegistrationCommand $command): void
     {
         $this->loadParticipant($command->getId());
-
-        $this->checkAttempts();
+        $this->checkIsRegistrationIsUnconfirmed();
         $this->registerNewAttempt();
 
         try {
@@ -47,11 +44,10 @@ class ConfirmRegistrationHandler
         $this->participant = $this->participants->get(new Id($id));
     }
 
-    private function checkAttempts(): void
+    private function checkIsRegistrationIsUnconfirmed(): void
     {
-        $registrationData = $this->participant->getRegistrationData();
-        if ($registrationData->getConfirmationAttempts() >= $this->attemptsAllowed) {
-            throw new exceptions\NoConfirmationAttemptsLeftException();
+        if ($this->participant->getIsRegistrationConfirmed()) {
+            throw new exceptions\RegistrationAlreadyConfirmedException();
         }
     }
 

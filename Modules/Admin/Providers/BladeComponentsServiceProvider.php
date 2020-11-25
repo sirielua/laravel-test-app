@@ -4,7 +4,6 @@ namespace Modules\Admin\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
-//use Illuminate\View\Compilers\BladeCompiler;
 
 class BladeComponentsServiceProvider extends ServiceProvider
 {

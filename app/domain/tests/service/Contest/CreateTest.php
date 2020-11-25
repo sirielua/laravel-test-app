@@ -4,11 +4,10 @@ namespace App\domain\tests\service\Contest;
 
 use PHPUnit\Framework\TestCase;
 
-use App\domain\service\Contest\dto\ContestDto;
-use App\domain\service\Contest\Create\CreateCommand;
-
 use App\domain\repositories\Contest\MemoryContestRepository;
 use App\domain\dispatchers\DummyEventDispatcher;
+use App\domain\service\Contest\Create\CreateCommand;
+use App\domain\service\Contest\dto\ContestDto;
 use App\domain\service\Contest\Create\CreateHandler;
 
 use App\domain\entities\Contest\Id;

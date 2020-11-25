@@ -1,11 +1,11 @@
 <?php
 
-namespace App\domain\service\Participant\UpdateReferralCount;
+namespace App\domain\service\Participant\UpdateReferralQuantity;
 
 use App\domain\service\CommandTrait;
 use Assert\Assertion;
 
-class UpdateReferralCountCommand
+class UpdateReferralQuantityCommand
 {
     use CommandTrait;
 

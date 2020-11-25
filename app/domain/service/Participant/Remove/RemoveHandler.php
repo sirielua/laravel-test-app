@@ -4,6 +4,7 @@ namespace App\domain\service\Participant\Remove;
 
 use App\domain\repositories\Participant\ParticipantRepository;
 use App\domain\dispatchers\EventDispatcher;
+use App\domain\entities\Participant\Id;
 
 class RemoveHandler
 {
@@ -19,9 +20,9 @@ class RemoveHandler
     /**
      * @throws \app\repositories\NotFoundExceptionNotFoundException
      */
-    public function run(RemoveCommand $command): void
+    public function handle(RemoveCommand $command): void
     {
-        $participant = $this->participants->get($command->id);
+        $participant = $this->participants->get(new Id($command->id));
 
         $participant->remove();
 

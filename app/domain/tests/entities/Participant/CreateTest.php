@@ -11,7 +11,6 @@ use App\domain\entities\Participant\Name;
 use App\domain\entities\Participant\Phone;
 use App\domain\entities\Participant\RegistrationData;
 use App\domain\entities\Participant\RegistrationStatus;
-use App\domain\entities\Participant\FacebookId;
 
 use App\domain\entities\Participant\events\ParticipantRegistered;
 
@@ -24,7 +23,7 @@ class CreateTest extends TestCase
             $contestId = ContestId::next(),
             $name = new Name('Sarah', 'Connor'),
             $phone = new Phone('123456789'),
-            $registrationData = new RegistrationData(
+            new RegistrationData(
                 $registrationStatus = new RegistrationStatus(RegistrationStatus::UNCONFIRMED),
                 $registeredAt = new \DateTimeImmutable(),
                 $confirmationCode = 12345,
@@ -40,7 +39,7 @@ class CreateTest extends TestCase
         $this->assertEquals($phone, $participant->getPhone());
         $this->assertEquals($registeredAt, $participant->getRegisteredAt());
         $this->assertNull($participant->getReferralId());
-        $this->assertEquals(0, $participant->getReferralCount());
+        $this->assertEquals(0, $participant->getReferralQuantity());
         $this->assertFalse($participant->getIsRegistrationConfirmed());
         $this->assertNull($participant->getFacebookId());
 
@@ -59,13 +58,13 @@ class CreateTest extends TestCase
     {
         $participant = new Participant(
             $id = Id::next(),
-            $contestId = ContestId::next(),
-            $name = new Name('Sarah', 'Connor'),
-            $phone = new Phone('123456789'),
-            $registrationData = new RegistrationData(
-                $registrationStatus = new RegistrationStatus(RegistrationStatus::UNCONFIRMED),
-                $registeredAt = new \DateTimeImmutable(),
-                $confirmationCode = 12345,
+            ContestId::next(),
+            new Name('Sarah', 'Connor'),
+            new Phone('123456789'),
+            new RegistrationData(
+                new RegistrationStatus(RegistrationStatus::UNCONFIRMED), // registration status
+                new \DateTimeImmutable(), // registered at
+                12345, // confirmation code
             ),
             $referralId = Id::next()
         );

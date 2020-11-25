@@ -1,9 +1,11 @@
 <?php
 
-namespace App\domain\service\Participan\LinkFacebook;
+namespace App\domain\service\Participant\LinkFacebook;
 
 use App\domain\repositories\Participant\ParticipantRepository;
 use App\domain\dispatchers\EventDispatcher;
+use App\domain\entities\Participant\Id;
+use App\domain\entities\Participant\FacebookId;
 
 class LinkFacebookHandler
 {
@@ -25,6 +27,7 @@ class LinkFacebookHandler
     {
         $this->loadParticipant($command);
 
+        $this->chechParticipantIsConfirmed($command->facebookId);
         $this->linkFacebook($command->facebookId);
         $this->persist();
     }
@@ -35,9 +38,16 @@ class LinkFacebookHandler
         $this->participant = $this->participants->get($id);
     }
 
+    private function chechParticipantIsConfirmed(): void
+    {
+        if (!$this->participant->getIsRegistrationConfirmed()) {
+            throw new exceptions\FacebookCanBeLinkedOnlyToConfirmedParticipantException();
+        }
+    }
+
     private function linkFacebook(string $facebookId): void
     {
-        $participant->attachFacebookId($facebookId);
+        $this->participant->attachFacebookId(new FacebookId($facebookId));
     }
 
     private function persist(): void
