@@ -32,21 +32,34 @@ trait ParticipantRepositoryTest
         $this->assertEquals($fetched->getContestId(), $created->getContestId());
         $this->assertEquals($fetched->getName(), $created->getName());
         $this->assertEquals($fetched->getPhone(), $created->getPhone());
-        $this->assertEquals($fetched->getRegisteredAt(), $created->getRegisteredAt());
+        $this->assertEquals($fetched->getRegisteredAt()->getTimestamp(), $created->getRegisteredAt()->getTimestamp());
         $this->assertEquals($fetched->getReferralId(), $created->getReferralId());
         $this->assertEquals($fetched->getReferralQuantity(), $created->getReferralQuantity());
         $this->assertEquals($fetched->getIsRegistrationConfirmed(), $created->getIsRegistrationConfirmed());
         $this->assertEquals($fetched->getFacebookId(), $created->getFacebookId());
 
-        $this->assertEquals($fetched->getRegistrationData()->getStatus(), $created->getRegistrationData()->getStatus());
-        $this->assertEquals($fetched->getRegistrationData()->getRegisteredAt(), $created->getRegistrationData()->getRegisteredAt());
-        $this->assertEquals($fetched->getRegistrationData()->getConfirmationCode(), $created->getRegistrationData()->getConfirmationCode());
-        $this->assertEquals($fetched->getRegistrationData()->getConfirmationReceivedTimes(), $created->getRegistrationData()->getConfirmationReceivedTimes());
-        $this->assertEquals($fetched->getRegistrationData()->getConfirmationReceivedAt(), $created->getRegistrationData()->getConfirmationReceivedAt());
-        $this->assertEquals($fetched->getRegistrationData()->getConfirmationAttempts(), $created->getRegistrationData()->getConfirmationAttempts());
-        $this->assertEquals($fetched->getRegistrationData()->getLastConfirmationAttemptAt(), $created->getRegistrationData()->getLastConfirmationAttemptAt());
-        $this->assertEquals($fetched->getRegistrationData()->getConfirmedAt(), $created->getRegistrationData()->getConfirmedAt());
-        $this->assertEquals($fetched->getRegistrationData()->getIsRegistrationConfirmed(), $created->getRegistrationData()->getIsRegistrationConfirmed());
+        $fRegData = $fetched->getRegistrationData();
+        $cRegData = $created->getRegistrationData();
+
+        $this->assertEquals($fRegData->getStatus(), $cRegData->getStatus());
+        $this->assertEquals($fRegData->getRegisteredAt()->getTimestamp(), $cRegData->getRegisteredAt()->getTimestamp());
+        $this->assertEquals($fRegData->getConfirmationCode(), $cRegData->getConfirmationCode());
+        $this->assertEquals($fRegData->getConfirmationReceivedTimes(), $cRegData->getConfirmationReceivedTimes());
+        $this->guardDatetime($fRegData->getConfirmationReceivedAt(), $cRegData->getConfirmationReceivedAt());
+        $this->assertEquals($fRegData->getConfirmationAttempts(), $cRegData->getConfirmationAttempts());
+        $this->guardDatetime($fRegData->getLastConfirmationAttemptAt(), $cRegData->getLastConfirmationAttemptAt());
+        $this->guardDatetime($fRegData->getConfirmedAt(), $cRegData->getConfirmedAt());
+        $this->assertEquals($fRegData->getIsRegistrationConfirmed(), $cRegData->getIsRegistrationConfirmed());
+    }
+
+    private function guardDatetime(\DateTimeImmutable $created = null, \DateTimeImmutable $fetched = null)
+    {
+        if ($created) {
+            $this->assertEquals($created->getTimestamp(), $fetched->getTimestamp());
+        } else {
+            $this->assertNull($created);
+            $this->assertNull($fetched);
+        }
     }
 
     public function testAddDuplicatedId(): void

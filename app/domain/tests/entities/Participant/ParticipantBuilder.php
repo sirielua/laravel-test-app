@@ -28,7 +28,7 @@ class ParticipantBuilder
         $this->id = Id::next();
         $this->contestId = ContestId::next();
         $this->name = new Name('Sarah', 'Connor');
-        $this->phone = new Phone('1234567890');
+        $this->phone = new Phone(uniqid());
         $this->referralQuantity = 0;
         $this->facebookId = new FacebookId('facebook-id');
     }

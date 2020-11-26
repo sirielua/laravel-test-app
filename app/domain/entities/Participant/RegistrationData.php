@@ -25,6 +25,7 @@ class RegistrationData
         \DateTimeImmutable $lastConfirmationAttemptAt = null,
         \DateTimeImmutable $confirmedAt = null
     ) {
+        Assertion::greaterOrEqualThan(\strlen($confirmationCode), 4);
         Assertion::greaterOrEqualThan($confirmationReceived, 0);
         Assertion::greaterOrEqualThan($confirmationAttempts, 0);
 

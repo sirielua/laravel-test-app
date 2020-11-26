@@ -123,8 +123,8 @@ class AdminServiceProvider extends ServiceProvider
      */
     public function bootFactories()
     {
-        if (! app()->environment('production') && $this->app->runningInConsole()) {
-            app(Factory::class)->load(module_path($this->moduleName, 'Database/factories'));
-        }
+//        if (! app()->environment('production') && $this->app->runningInConsole()) {
+//            app(Factory::class)->load(module_path($this->moduleName, 'Database/factories'));
+//        }
     }
 }
