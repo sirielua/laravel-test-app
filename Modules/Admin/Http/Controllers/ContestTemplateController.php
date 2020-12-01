@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 use App\Models\Contest;
-use Modules\Admin\Entities\DataTables\ContestTemplateDataTable;
+use Modules\Admin\View\DataTables\ContestTemplateDataTable;
 use Modules\Admin\Http\Requests\ModifyContestTemplate;
 use Modules\Admin\Http\Requests\BatchUpdate;
 

@@ -15,7 +15,8 @@
 
 @section('content')
     <div class="main-card mb-3 card">
-        <div class="card-body"><h5 class="card-title">Create form</h5>
+        <div class="card-body">
+            <h5 class="card-title">Create form</h5>
             @include('admin::contest-templates._form', ['route' => route('admin::contest-templates.store'), 'method' => 'POST'])
         </div>
     </div>

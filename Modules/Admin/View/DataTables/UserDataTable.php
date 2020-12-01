@@ -1,9 +1,10 @@
 <?php
 
-namespace Modules\Admin\Entities\DataTables;
+namespace Modules\Admin\View\DataTables;
 
-use App\Models\User;
+use Modules\Admin\Components\DataTables\AdminDataTable;
 use Yajra\DataTables\Html\Column;
+use App\Models\User;
 
 class UserDataTable extends AdminDataTable
 {

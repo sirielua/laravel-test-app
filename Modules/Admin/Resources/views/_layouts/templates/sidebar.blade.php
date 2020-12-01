@@ -38,7 +38,7 @@
                 {{-- General Menu Section --}}
                 <li class="app-sidebar__heading">Menu</li>
                 <li><a href="{{ route('admin::contest-templates.index') }}"><i class="metismenu-icon pe-7s-display2"></i> Contest Templates</a></li>
-                <li><a href="javascript::void(0);"><i class="metismenu-icon pe-7s-display2"></i> Participants</a></li>
+                <li><a href="{{ route('admin::participants.index') }}"><i class="metismenu-icon pe-7s-display2"></i> Participants</a></li>
 
                 {{-- Auth Menu Section --}}
                 <li class="app-sidebar__heading">Auth</li>

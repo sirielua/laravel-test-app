@@ -1,6 +1,6 @@
 @extends('admin::_layouts.master')
 
-@section('page-title', 'List Contest Templates')
+@section('page-title', 'Contest Templates')
 @section('title-subheading', '')
 
 @section('breadcrumbs')

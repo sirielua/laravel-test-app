@@ -36,7 +36,7 @@
  *
  * return $dataTable->render('users.index');
  */
-namespace Modules\Admin\Entities\DataTables;
+namespace Modules\Admin\Components\DataTables;
 
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
@@ -53,6 +53,8 @@ abstract class AdminDataTable extends DataTable
     protected $checkboxColName = 'selected';
 
     protected $actionsColName = 'actions';
+
+    protected $defaultOrder = [1, 'asc'];
 
     protected $pageLength = 25;
 
@@ -142,12 +144,11 @@ abstract class AdminDataTable extends DataTable
     {
         return $this->builder()
             ->processing(false)
-            ->parameters(['aaa' => 'bbbb'])
             ->setTableId($this->tableId)
             ->columns($this->defineColumns())
             ->minifiedAjax()
             ->ajax(['url' => $this->getAjaxUrl()])
-            ->orderBy(1)
+            ->orderBy($this->defaultOrder)
             ->pageLength($this->pageLength);
 
 //        return $this->builder()->buttons(

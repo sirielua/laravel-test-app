@@ -31,6 +31,6 @@ class FileInput extends Component
      */
     public function render()
     {
-        return view('admin::components.architect.file-input');
+        return view('admin::_components.architect.file-input');
     }
 }

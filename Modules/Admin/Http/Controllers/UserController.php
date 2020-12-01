@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-use Modules\Admin\Entities\DataTables\UserDataTable;
+use Modules\Admin\View\DataTables\UserDataTable;
 use Modules\Admin\Services\User\UserService;
 
 class UserController extends Controller

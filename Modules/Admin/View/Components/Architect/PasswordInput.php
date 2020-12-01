@@ -35,6 +35,6 @@ class PasswordInput extends Component
      */
     public function render()
     {
-        return view('admin::components.architect.password-input');
+        return view('admin::_components.architect.password-input');
     }
 }

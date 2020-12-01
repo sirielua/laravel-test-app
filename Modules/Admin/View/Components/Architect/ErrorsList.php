@@ -25,6 +25,6 @@ class ErrorsList extends Component
      */
     public function render()
     {
-        return view('admin::components.architect.errors-list');
+        return view('admin::_components.architect.errors-list');
     }
 }

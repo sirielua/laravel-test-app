@@ -1,9 +1,10 @@
 <?php
 
-namespace Modules\Admin\Entities\DataTables;
+namespace Modules\Admin\View\DataTables;
 
-use App\Models\Contest;
+use Modules\Admin\Components\DataTables\AdminDataTable;
 use Yajra\DataTables\Html\Column;
+use App\Models\Contest;
 use Illuminate\Support\Facades\Storage;
 
 class ContestTemplateDataTable extends AdminDataTable
@@ -13,6 +14,8 @@ class ContestTemplateDataTable extends AdminDataTable
     protected $checkboxColName = 'selected';
 
     protected $actionsColName = 'actions';
+
+    protected $defaultOrder = [4, 'asc'];
 
     protected $pageLength = 25;
 

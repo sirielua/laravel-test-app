@@ -16,7 +16,8 @@
 
 @section('content')
     <div class="main-card mb-3 card">
-        <div class="card-body"><h5 class="card-title">Edit form</h5>
+        <div class="card-body"
+            <h5 class="card-title">Edit form</h5>
             @include('admin::contest-templates._form', ['route' => route('admin::contest-templates.update', $model), 'method' => 'PUT'])
         </div>
     </div>

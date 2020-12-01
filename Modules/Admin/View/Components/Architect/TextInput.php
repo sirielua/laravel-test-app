@@ -31,6 +31,6 @@ class TextInput extends Component
      */
     public function render()
     {
-        return view('admin::components.architect.text-input');
+        return view('admin::_components.architect.text-input');
     }
 }

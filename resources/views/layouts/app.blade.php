@@ -6,12 +6,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Language" content="{{ str_replace('_', '-', app()->getLocale()) }}">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    
+
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
-    
+    <title>
+        @hasSection('page-title')
+            @yield('page-title') - {{ config('app.name', 'Laravel') }}
+        @else
+            {{ config('app.name', 'Laravel') }}
+        @endif
+    </title>
+
     <!-- Scripts -->
     <script src="{{ mix('js/app.js') }}" defer></script>
 
@@ -72,6 +78,12 @@
         </nav>
 
         <main class="py-4">
+            @if (session('status'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('status') }}
+                </div>
+            @endif
+
             @yield('content')
         </main>
     </div>

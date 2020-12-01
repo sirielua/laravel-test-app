@@ -23,6 +23,6 @@ class FormGroup extends Component
      */
     public function render()
     {
-        return view('admin::components.architect.form-group');
+        return view('admin::_components.architect.form-group');
     }
 }

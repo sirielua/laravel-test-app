@@ -27,7 +27,7 @@ class CreateParticipantsTable extends Migration
             $table->string('registration_confirmation_code');
             $table->integer('registration_confirmations_received')->default(0);
             $table->integer('registration_confirmations_attempts')->default(0);
-            $table->timestamp('registratered_at')->nullable();
+            $table->timestamp('registered_at')->nullable();
             $table->timestamp('registration_confirmation_received_at')->nullable();
             $table->timestamp('registration_confirmation_last_attempt_at')->nullable();
             $table->timestamp('registration_confirmed_at')->nullable();

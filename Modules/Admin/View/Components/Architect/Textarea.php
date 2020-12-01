@@ -31,6 +31,6 @@ class Textarea extends Component
      */
     public function render()
     {
-        return view('admin::components.architect.textarea');
+        return view('admin::_components.architect.textarea');
     }
 }

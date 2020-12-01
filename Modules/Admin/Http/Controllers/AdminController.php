@@ -5,7 +5,7 @@ namespace Modules\Admin\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
 
-use Modules\Admin\Entities\DataTables\UserDataTable;
+use Modules\Admin\View\DataTables\UserDataTable;
 
 class AdminController extends Controller
 {

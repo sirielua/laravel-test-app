@@ -25,6 +25,6 @@ class Submit extends Component
      */
     public function render()
     {
-        return view('admin::components.architect.submit');
+        return view('admin::_components.architect.submit');
     }
 }

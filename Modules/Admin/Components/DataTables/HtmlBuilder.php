@@ -138,10 +138,8 @@ class HtmlBuilder extends Builder
         foreach ($this->collection->all() as $key => $row) {
             $searchable = $row['searchable'] && isset($row->search);
             $label = $searchable ? $row->search : $row['title'];
-
             $search[] = '<th ' . ($searchable ? 'class="searchable" ' : '') . 'data-col-index="' . $key . '">' . $label . '</th>' ;
         }
-
         return $search;
     }
 

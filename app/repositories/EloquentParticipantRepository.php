@@ -40,14 +40,14 @@ class EloquentParticipantRepository implements ParticipantRepository
             'phone' => new Phone($model->phone),
             'registrationData' => new RegistrationData(
                 new RegistrationStatus($model->registration_status),
-                (new \DateTimeImmutable())->setTimestamp($model->registratered_at), // registered at
+                new \DateTimeImmutable($model->registered_at),
                 $model->registration_confirmation_code,
                 $model->registration_confirmations_received,
                 $model->registration_confirmations_attempts,
 
-                $model->registration_confirmation_received_at ? (new \DateTimeImmutable())->setTimestamp($model->registration_confirmation_received_at) : null,
-                $model->registration_confirmation_last_attempt_at ? (new \DateTimeImmutable())->setTimestamp($model->registration_confirmation_last_attempt_at) : null,
-                $model->registration_confirmed_at ? (new \DateTimeImmutable())->setTimestamp($model->registration_confirmed_at) : null,
+                $model->registration_confirmation_received_at ? new \DateTimeImmutable($model->registration_confirmation_received_at) : null,
+                $model->registration_confirmation_last_attempt_at ? new \DateTimeImmutable($model->registration_confirmation_last_attempt_at) : null,
+                $model->registration_confirmed_at ? new \DateTimeImmutable($model->registration_confirmed_at) : null,
             ),
             'referralId' => $model->referral_id ? new Id($model->referral_id) : null,
             'referralQuantity' => $model->referral_quantity,
@@ -87,15 +87,15 @@ class EloquentParticipantRepository implements ParticipantRepository
         $model->registration_confirmation_code = $registrationData->getConfirmationCode();
         $model->registration_confirmations_received = $registrationData->getConfirmationReceivedTimes();
         $model->registration_confirmations_attempts = $registrationData->getConfirmationAttempts();
-        $model->registratered_at = $registrationData->getRegisteredAt()->getTimestamp();
+        $model->registered_at = $registrationData->getRegisteredAt()->format('Y-m-d H:i:s');
 
         $confirmationReceivedAt = $registrationData->getConfirmationReceivedAt();
         $lastConfirmationAttemptAt = $registrationData->getLastConfirmationAttemptAt();
         $confirmedAt = $registrationData->getConfirmedAt();
 
-        $model->registration_confirmation_received_at = $confirmationReceivedAt ? $confirmationReceivedAt->getTimestamp() : null;
-        $model->registration_confirmation_last_attempt_at = $lastConfirmationAttemptAt ? $lastConfirmationAttemptAt->getTimestamp() : null;
-        $model->registration_confirmed_at = $confirmedAt ? $confirmedAt->getTimestamp() : null;
+        $model->registration_confirmation_received_at = $confirmationReceivedAt ? $confirmationReceivedAt->format('Y-m-d H:i:s') : null;
+        $model->registration_confirmation_last_attempt_at = $lastConfirmationAttemptAt ? $lastConfirmationAttemptAt->format('Y-m-d H:i:s') : null;
+        $model->registration_confirmed_at = $confirmedAt ? $confirmedAt->format('Y-m-d H:i:s') : null;
 
         $model->save();
     }
