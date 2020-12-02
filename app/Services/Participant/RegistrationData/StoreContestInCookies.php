@@ -22,10 +22,10 @@ class StoreContestInCookies extends Decorator implements RegistrationData
 
     public function setContestId($value)
     {
+        $this->next->setContestId($value);
+
         $this->contestId = $value;
         Cookie::queue($this->prefix.'.contest_id', $value, $this->lifetimeInMinutes);
-
-        return $this->next->setContestId($value);
     }
 
     public function getContestId()

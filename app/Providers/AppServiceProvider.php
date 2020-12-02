@@ -8,7 +8,7 @@ use App\Services\Participant\RegistrationService;
 use App\Services\Participant\RegistrationData\StoreContestInCookies;
 use App\Services\Participant\RegistrationData\StoreReferralInCookiesIfNew;
 use App\Services\Participant\RegistrationData\SessionRegistrationData;
-use App\Services\Participant\RegistrationData\SimpleRegistrationData;
+use App\Services\Participant\RegistrationData\MemoryRegistrationData;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
                 new StoreContestInCookies(
                     new StoreReferralInCookiesIfNew(
                         new SessionRegistrationData(
-                            new SimpleRegistrationData(),
+                            new MemoryRegistrationData(),
                             $app->make('Illuminate\\Http\\Request')->session()
                         )
                     )

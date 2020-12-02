@@ -236,7 +236,7 @@ abstract class AdminDataTable extends DataTable
             'label' => $options['label'],
             'style' => $options['style'], // button|outline|no-border|badge|pill, basic is default style,
             'tag' => $options['tag'], // primary|secondary|success|info|warning|danger|focus|light|dark|link,
-            'route' => $routes[$options['route']],
+            'route' => $routes[$options['route']] ?? null,
             'verb' => $options['verb'],
         ])->render();
     }

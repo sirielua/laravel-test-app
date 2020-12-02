@@ -20,9 +20,9 @@ class SessionRegistrationData extends Decorator implements RegistrationData
 
     public function setStage($value)
     {
-        $this->session->put($this->prefix.'.stage', $value);
+        $this->next->setStage($value);
 
-        return $this->next->setStage($value);
+        $this->session->put($this->prefix.'.stage', $value);
     }
 
     public function getStage()
@@ -32,9 +32,9 @@ class SessionRegistrationData extends Decorator implements RegistrationData
 
     public function setId($value)
     {
-        $this->session->put($this->prefix.'.id', $value);
+        $this->next->setId($value);
 
-        return $this->next->setId($value);
+        $this->session->put($this->prefix.'.id', $value);
     }
 
     public function getId()
@@ -44,9 +44,9 @@ class SessionRegistrationData extends Decorator implements RegistrationData
 
     public function setContestId($value)
     {
-        $this->session->put($this->prefix.'.contest_id', $value);
+        $this->next->setContestId($value);
 
-        return $this->next->setContestId($value);
+        $this->session->put($this->prefix.'.contest_id', $value);
     }
 
     public function getContestId()
@@ -56,9 +56,9 @@ class SessionRegistrationData extends Decorator implements RegistrationData
 
     public function setFirstName($value)
     {
-        $this->session->put($this->prefix.'.first_name', $value);
+        $this->next->setFirstName($value);
 
-        return $this->next->setFirstName($value);
+        $this->session->put($this->prefix.'.first_name', $value);
     }
 
     public function getFirstName()
@@ -68,9 +68,9 @@ class SessionRegistrationData extends Decorator implements RegistrationData
 
     public function setLastName($value)
     {
-        $this->session->put($this->prefix.'.last_name', $value);
+        $this->next->setLastName($value);
 
-        return $this->next->setLastName($value);
+        $this->session->put($this->prefix.'.last_name', $value);
     }
 
     public function getLastName()
@@ -80,9 +80,9 @@ class SessionRegistrationData extends Decorator implements RegistrationData
 
     public function setPhone($value)
     {
-        $this->session->put($this->prefix.'.phone', $value);
+        $this->next->setPhone($value);
 
-        return $this->next->setPhone($value);
+        $this->session->put($this->prefix.'.phone', $value);
     }
 
     public function getPhone()
@@ -92,9 +92,9 @@ class SessionRegistrationData extends Decorator implements RegistrationData
 
     public function setReferralId($value)
     {
-        $this->session->put($this->prefix.'.referral_id', $value);
+        $this->next->setReferralId($value);
 
-        return $this->next->setReferralId($value);
+        $this->session->put($this->prefix.'.referral_id', $value);
     }
 
     public function getReferralId()

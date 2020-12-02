@@ -22,12 +22,12 @@ class StoreReferralInCookiesIfNew extends Decorator implements RegistrationData
 
     public function setReferralId($value)
     {
+        $this->next->setReferralId($value);
+
         if ($this->next->getStage() === RegistrationData::STAGE_REGISTER) {
             $this->referralId = $value;
             Cookie::queue($this->prefix.'.referral_id', $value, $this->lifetimeInMinutes);
         }
-
-        return $this->next->setReferralId($value);
     }
 
     public function getReferralId()

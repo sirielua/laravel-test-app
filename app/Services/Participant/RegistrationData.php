@@ -6,9 +6,8 @@ interface RegistrationData
 {
     const STAGE_REGISTER = 'register';
     const STAGE_VERIFICATION = 'verification';
-    const STAGE_CONFIRMED = 'confirmed';
     const STAGE_SHARE = 'share';
-    const STAGE_MESSANGER = 'messenger';
+    const STAGE_MESSENGER = 'messenger';
 
     public function setStage($value);
     public function getStage();

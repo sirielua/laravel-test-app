@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
+use Illuminate\Http\Request;
+
 // Components
 use App\domain\dispatchers\EventDispatcher;
 use App\domain\dispatchers\DummyEventDispatcher;
@@ -11,6 +13,8 @@ use App\domain\repositories\Hydrator;
 
 use App\domain\components\ConfirmationCodeGenerator\ConfirmationCodeGenerator;
 use App\domain\components\ConfirmationCodeGenerator\NumberConfirmationCodeGenerator;
+use App\domain\components\RegistrationNotifier\RegistrationNotifier;
+use App\Components\SessionRegistrationNotifier;
 
 // Repositories
 use App\domain\repositories\Contest\ContestRepository;
@@ -29,6 +33,7 @@ use App\domain\service\Contest\Update\UpdateHandler as ContestUpdateHandler;
 
 //Participant Services
 use App\domain\service\Participant\Register\RegisterHandler as ParticipantRegisterHandler;
+use App\domain\service\Participant\SendConfirmation\SendConfirmationHandler as ParticipantSendConfirmationHandler;
 
 class DomainServiceProvider extends ServiceProvider
 {
@@ -66,6 +71,10 @@ class DomainServiceProvider extends ServiceProvider
 
         $this->app->singleton(ConfirmationCodeGenerator::class, function ($app) {
             return new NumberConfirmationCodeGenerator($length = 4);
+        });
+
+        $this->app->singleton(RegistrationNotifier::class, function ($app) {
+            return new SessionRegistrationNotifier($app->make(Request::class));
         });
     }
 
@@ -119,6 +128,12 @@ class DomainServiceProvider extends ServiceProvider
             );
         });
 
-
+        $this->app->bind(ParticipantSendConfirmationHandler::class, function ($app) {
+            return new ParticipantSendConfirmationHandler(
+                $app->make(RegistrationNotifier::class),
+                $app->make(ParticipantRepository::class),
+                $app->make(EventDispatcher::class),
+            );
+        });
     }
 }

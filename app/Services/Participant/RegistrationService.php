@@ -8,18 +8,22 @@ use App\Models\Participant;
 use App\domain\service\Participant\Register\RegisterCommand;
 use App\domain\service\Participant\Register\RegisterHandler;
 
+use App\domain\service\Participant\SendConfirmation\SendConfirmationCommand;
+use App\domain\service\Participant\SendConfirmation\SendConfirmationHandler;
+use App\domain\service\Participant\SendConfirmation\exceptions\OnlyUnconfirmedParticipantsCouldBeNotifiedException;
+
+use App\domain\service\Participant\Remove\RemoveCommand;
+use App\domain\service\Participant\Remove\RemoveHandler;
+
+use App\domain\service\Participant\ConfirmRegistration\ConfirmRegistrationCommand;
+use App\domain\service\Participant\ConfirmRegistration\ConfirmRegistrationHandler;
+use App\domain\service\Participant\ConfirmRegistration\exceptions\RegistrationAlreadyConfirmedException;
+
 class RegistrationService
 {
     private $data;
-
-    public function __construct(RegistrationData $data)
-    {
-        $this->data = $data;
-
-        if (!$this->data->getStage()) {
-            $this->data->setStage(RegistrationData::STAGE_REGISTER);
-        }
-    }
+    private $contest;
+    private $participant;
 
     public function __get($name)
     {
@@ -31,9 +35,47 @@ class RegistrationService
         throw new \ErrorException ('Undefined property: ' . get_class($this) . '::$' . $name);
     }
 
-    public function getData(): RegistrationData
+    public function __construct(RegistrationData $data)
     {
-        return $this->data;
+        $this->data = $data;
+        $this->init();
+    }
+
+    private function init()
+    {
+        if (!$this->isStateValid()) {
+            $this->resetState();
+        }
+    }
+
+    private function isStateValid()
+    {
+        if (!$this->data->getStage()) {
+            return false;
+        }
+
+        if ($this->data->getContestId() && !$this->getContest()) {
+            return false;
+        }
+
+        if ($this->data->getId() && !$this->getParticipant()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function resetState()
+    {
+        $this->data->setStage(RegistrationData::STAGE_REGISTER);
+        $this->data->setId(null);
+        $this->data->setContestId(null);
+        $this->data->setFirstName(null);
+        $this->data->setLastName(null);
+        $this->data->setPhone(null);
+        $this->data->setReferralId(null);
+
+        $this->participant = $this->contest = null;
     }
 
     public function getContest()
@@ -59,6 +101,11 @@ class RegistrationService
         }
     }
 
+    public function getData(): RegistrationData
+    {
+        return $this->data;
+    }
+
     public function register($data)
     {
         $this->data->setFirstName($data['first_name']);
@@ -79,5 +126,44 @@ class RegistrationService
 
         $this->data->setId((string)$id);
         $this->data->setStage(RegistrationData::STAGE_VERIFICATION);
+
+        $this->sendVerification();
+    }
+
+    public function sendVerification()
+    {
+        $command = new SendConfirmationCommand($this->data->getId());
+        $handler = app()->make(SendConfirmationHandler::class);
+
+        try {
+            $handler->handle($command);
+        } catch (OnlyUnconfirmedParticipantsCouldBeNotifiedException $e) {
+            $this->data->setStage(RegistrationData::STAGE_SHARE);
+        }
+    }
+
+    public function editNumber()
+    {
+        $command = new RemoveCommand($this->data->getId());
+        $handler = app()->make(RemoveHandler::class);
+
+        $handler->handle($command);
+
+        $this->data->setStage(RegistrationData::STAGE_REGISTER);
+        $this->data->setId(null);
+        $this->participant = null;
+    }
+
+    public function confirm($code)
+    {
+        $command = new ConfirmRegistrationCommand($this->data->getId(), $code);
+        $handler = app()->make(ConfirmRegistrationHandler::class);
+
+        try {
+            $handler->handle($command);
+            $this->data->setStage(RegistrationData::STAGE_SHARE);
+        } catch (RegistrationAlreadyConfirmedException $e) {
+            $this->data->setStage(RegistrationData::STAGE_SHARE);
+        }
     }
 }

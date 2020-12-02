@@ -28,4 +28,8 @@
     $buttonClass .= $tag
 @endphp
 
+@if ($route)
 <a href="{{ $route }}" class="{{ $buttonClass }}" data-method="{{ $verb }}">{{ __($label) }}</a>
+@else
+<span class="{{ $buttonClass }}">{{ __($label) }}</span>
+@endif
