@@ -87,7 +87,7 @@ class RegistrationService
         }
 
         if (!$contest) {
-            $contest = Contest::active()->firstOrFail();
+            $contest = Contest::active()->inRandomOrder()->firstOrFail();
             $this->data->setContestId($contest->id);
         }
 
@@ -104,6 +104,16 @@ class RegistrationService
     public function getData(): RegistrationData
     {
         return $this->data;
+    }
+
+    public function referral($id)
+    {
+        $contestId = $this->data->getContestId();
+
+        $this->resetState();
+        $this->data->setReferralId($id);
+        $this->data->setContestId($contestId);
+        $this->data->setStage(RegistrationData::STAGE_REGISTER);
     }
 
     public function register($data)

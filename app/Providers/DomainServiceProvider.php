@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 // Components
 use App\domain\dispatchers\EventDispatcher;
 use App\domain\dispatchers\DummyEventDispatcher;
+use App\Components\ParticipantEventDispatcher;
 use App\domain\repositories\Hydrator;
 
 use App\domain\components\ConfirmationCodeGenerator\ConfirmationCodeGenerator;
@@ -34,6 +35,9 @@ use App\domain\service\Contest\Update\UpdateHandler as ContestUpdateHandler;
 //Participant Services
 use App\domain\service\Participant\Register\RegisterHandler as ParticipantRegisterHandler;
 use App\domain\service\Participant\SendConfirmation\SendConfirmationHandler as ParticipantSendConfirmationHandler;
+use App\domain\service\Participant\Remove\RemoveHandler as ParticipantRemoveHandler;
+use App\domain\service\Participant\ConfirmRegistration\ConfirmRegistrationHandler as ParticipantConfirmRegistrationHandler;
+use App\domain\service\Participant\UpdateReferralQuantity\UpdateReferralQuantityHandler as ParticipantUpdateReferralQuantityHandler;
 
 class DomainServiceProvider extends ServiceProvider
 {
@@ -63,6 +67,10 @@ class DomainServiceProvider extends ServiceProvider
     {
         $this->app->singleton(EventDispatcher::class, function ($app) {
             return new DummyEventDispatcher();
+        });
+
+        $this->app->singleton(ParticipantEventDispatcher::class, function ($app) {
+            return new ParticipantEventDispatcher($app->make(ParticipantRepository::class));
         });
 
         $this->app->singleton(Hydrator::class, function ($app) {
@@ -124,7 +132,7 @@ class DomainServiceProvider extends ServiceProvider
             return new ParticipantRegisterHandler(
                 $app->make(ConfirmationCodeGenerator::class),
                 $app->make(ParticipantRepository::class),
-                $app->make(EventDispatcher::class),
+                $app->make(ParticipantEventDispatcher::class),
             );
         });
 
@@ -132,7 +140,28 @@ class DomainServiceProvider extends ServiceProvider
             return new ParticipantSendConfirmationHandler(
                 $app->make(RegistrationNotifier::class),
                 $app->make(ParticipantRepository::class),
-                $app->make(EventDispatcher::class),
+                $app->make(ParticipantEventDispatcher::class),
+            );
+        });
+
+        $this->app->bind(ParticipantRemoveHandler::class, function ($app) {
+            return new ParticipantRemoveHandler(
+                $app->make(ParticipantRepository::class),
+                $app->make(ParticipantEventDispatcher::class),
+            );
+        });
+
+        $this->app->bind(ParticipantConfirmRegistrationHandler::class, function ($app) {
+            return new ParticipantConfirmRegistrationHandler(
+                $app->make(ParticipantRepository::class),
+                $app->make(ParticipantEventDispatcher::class),
+            );
+        });
+
+        $this->app->bind(ParticipantUpdateReferralQuantityHandler::class, function ($app) {
+            return new ParticipantUpdateReferralQuantityHandler(
+                $app->make(ParticipantRepository::class),
+                $app->make(ParticipantEventDispatcher::class),
             );
         });
     }

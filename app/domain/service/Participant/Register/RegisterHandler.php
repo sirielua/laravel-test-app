@@ -14,6 +14,8 @@ use App\domain\entities\Participant\Phone;
 use App\domain\entities\Participant\RegistrationData;
 use App\domain\entities\Participant\RegistrationStatus;
 
+use App\domain\repositories\NotFoundException;
+
 class RegisterHandler
 {
     private $confirmationCodeGenerator;
@@ -54,7 +56,7 @@ class RegisterHandler
                 new \DateTimeImmutable(), // registered at
                 $this->confirmationCodeGenerator->generate(), // confirmation code
             ),
-            $command->getReferralId() ? new Id($command->getReferralId()) : null
+            $this->filterReferralId($command->getReferralId())
         );
     }
 
@@ -62,6 +64,21 @@ class RegisterHandler
     {
         if ($this->participants->existsByPhone($this->participant->getPhone())) {
             throw new exceptions\PhoneAlreadyRegisteredException('This phone already registered');
+        }
+    }
+
+    private function filterReferralId($value)
+    {
+        if (!$value) {
+            return;
+        }
+
+        $id = new Id($value);
+
+        try {
+            return $this->participants->get($id) ? $id : null;
+        } catch (NotFoundException $e) {
+            return null;
         }
     }
 

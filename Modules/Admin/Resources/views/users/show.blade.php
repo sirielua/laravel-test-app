@@ -30,6 +30,10 @@
 
             <ul class="list-group">
                 <li class="list-group-item">
+                    <h5 class="list-group-item-heading">Id</h5>
+                    <p class="list-group-item-text">{{ $model->id }}</p>
+                </li>
+                <li class="list-group-item">
                     <h5 class="list-group-item-heading">Name</h5>
                     <p class="list-group-item-text">{{ $model->name }}</p>
                 </li>

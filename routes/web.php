@@ -36,7 +36,9 @@ Route::middleware([CheckParticipantRegistrationState::class])->group(function() 
     Route::get('/share', 'ParticipantController@share')->name('participants.share');
     Route::get('/messenger', 'ParticipantController@messenger')->name('participants.messenger');
 });
-Route::get('/reset', 'ParticipantController@registerAgain')->name('participants.reset');
+
 Route::get('/user/{user}', 'ParticipantController@user')->name('participants.user');
+Route::get('/user-tracking/{user}', 'ParticipantController@referral')->name('participants.referral');
+Route::delete('/reset', 'ParticipantController@registerAgain')->name('participants.reset');
 
 Route::fallback('FallbackController@index');

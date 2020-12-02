@@ -32,6 +32,11 @@ class Participant extends Model
 
     ];
 
+    public function isConfirmed()
+    {
+        return $this->registration_status == self::STATUS_CONFIRMED;
+    }
+
     /**
      * Scope a query to only include active users.
      *

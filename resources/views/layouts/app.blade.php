@@ -78,20 +78,32 @@
         </nav>
 
         <main class="py-4">
-            @if (session('status'))
-                <div class="alert alert-success" role="alert">
-                    {{ session('status') }}
-                </div>
-            @endif
+            <div class="container">
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a href="{{ route('index') }}" class="nav-link @if (Route::current()->getName() == 'index') active @endif">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('participants.reset') }}" class="spoofed nav-link text-danger" data-confirm-msg="Are you sure?" data-ajax="false" data-method="delete" data-csrf="{{ csrf_token() }}">Reset registration</a>
+                    </li>
+                </ul>
 
-            @if (session('error'))
-                <div class="alert alert-danger" role="alert">
-                    {{ session('error') }}
-                </div>
-            @endif
+                @if (session('status'))
+                    <div class="alert alert-success" role="alert">
+                        {{ session('status') }}
+                    </div>
+                @endif
+
+                @if (session('error'))
+                    <div class="alert alert-danger" role="alert">
+                        {{ session('error') }}
+                    </div>
+                @endif
+            </div>
 
             @yield('content')
         </main>
     </div>
+    @stack('scripts')
 </body>
 </html>

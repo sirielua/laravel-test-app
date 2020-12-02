@@ -13,7 +13,7 @@
 
     <hr />
 
-    <x-architect::radio-input label="Is Active" attribute="is_active" :options="[2 => 'Active', 0 => 'Inactive']" default="1" :model="$model ?? null"  />
+    <x-architect::radio-input label="Is Active" attribute="is_active" :options="[1 => 'Active', 0 => 'Inactive']" default="1" :model="$model ?? null"  />
 
     <hr />
 

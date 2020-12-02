@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('page-title', 'Verify!')
+@section('page-title', 'Share!')
 
 @section('content')
 <div class="container">
@@ -23,12 +23,12 @@
                     </p>
 
                     <h5 class="card-title">Or copy the link below and share it wherever you like!</h5>
-                    <p class="card-text">
-                        <input type="text" value="referral-link-here" class="form-control"  readonly />
-                    </p>
+
+                    @include('participants.share._copy_referral_link', ['url' => route('participants.referral', $participant->id)])
 
                     <hr />
-                    <p class="card-text">{{ $contest->explaining_text }}</p>
+
+                    <p class="card-text"><a href="{{ route('participants.messenger') }}">I am done sharing, please take me to the final step!</a></p>
                 </div>
 
                 <div class="card-body" style="display: none;">

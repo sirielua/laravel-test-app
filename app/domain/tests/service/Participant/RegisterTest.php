@@ -12,6 +12,7 @@ use App\domain\dispatchers\DummyEventDispatcher;
 use App\domain\components\ConfirmationCodeGenerator\NumberConfirmationCodeGenerator;
 use App\domain\service\Participant\Register\exceptions\PhoneAlreadyRegisteredException;
 
+use App\domain\tests\entities\Participant\ParticipantBuilder;
 use App\domain\entities\Participant\Id;
 use App\domain\entities\Participant\RegistrationStatus;
 
@@ -67,12 +68,16 @@ class RegisterTest extends TestCase
 
     public function testRegistrationWithReferralId()
     {
+        $referralParticipant = (new ParticipantBuilder)
+            ->withId($referralId = new Id(uniqid()))
+            ->build();
+        self::$participants->add($referralParticipant);
         $command = new RegisterCommand(
             'contest-id', // contest id
             'Sarrah', // first name
             'Connor', // last name
             $phone = uniqid(),
-            $referralId = 'referral_id',
+            (string)$referralId,
         );
         $handler = new RegisterHandler(self::$codeGenerator, self::$participants, self::$dispatcher);
 
@@ -80,6 +85,23 @@ class RegisterTest extends TestCase
         $participant = self::$participants->get($id);
 
         $this->assertEquals(new Id($referralId), $participant->getReferralId());
+    }
+
+    public function testRegistrationWithInvalidReferralId()
+    {
+        $command = new RegisterCommand(
+            'contest-id', // contest id
+            'Sarrah', // first name
+            'Connor', // last name
+            uniqid(), // phone
+            uniqid(), // referral id
+        );
+        $handler = new RegisterHandler(self::$codeGenerator, self::$participants, self::$dispatcher);
+
+        $id = $handler->handle($command);
+        $participant = self::$participants->get($id);
+
+        $this->assertNull($participant->getReferralId());
     }
 
     public function testRegistrationWithExistingPhone()

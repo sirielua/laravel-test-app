@@ -8,7 +8,7 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('admin::home') }}">Home</a></li>
             <li class="breadcrumb-item"><a href="{{ route('admin::participants.index') }}">Participants</a></li>
-            <li class="active breadcrumb-item">{{ $model->name }}</li>
+            <li class="active breadcrumb-item">{{ $model->first_name }}</li>
         </ol>
     </nav>
 @endsection
@@ -30,32 +30,32 @@
 
             <ul class="list-group">
                 <li class="list-group-item">
-                    <h5 class="list-group-item-heading">Headline</h5>
-                    <p class="list-group-item-text">{{ $model->headline }}</p>
+                    <h5 class="list-group-item-heading">Id</h5>
+                    <p class="list-group-item-text">{{ $model->id }}</p>
                 </li>
                 <li class="list-group-item">
-                    <h5 class="list-group-item-heading">Subheadline</h5>
-                    <p class="list-group-item-text">{{ $model->subheadline }}</p>
+                    <h5 class="list-group-item-heading">Name</h5>
+                    <p class="list-group-item-text">{{ $model->first_name }} {{ $model->last_name }}</p>
                 </li>
                 <li class="list-group-item">
-                    <h5 class="list-group-item-heading">Explaining Text</h5>
-                    <div class="list-group-item-text">{{ $model->explaining_text }}</div>
+                    <h5 class="list-group-item-heading">Phone</h5>
+                    <p class="list-group-item-text">{{ $model->phone }}</p>
                 </li>
                 <li class="list-group-item">
-                    <h5 class="list-group-item-heading">Banner</h5>
-                    @if ($model->banner)
-                        <img src = "{{ asset($model->banner) }}" style="max-width: 600px;" />
-                    @else
-                        <p class="list-group-item-text">No banner</p>
-                    @endif
+                    <h5 class="list-group-item-heading">Referral Id</h5>
+                    <div class="list-group-item-text">{{ $model->referral_id ?? 'None' }}</div>
                 </li>
                 <li class="list-group-item">
-                    <h5 class="list-group-item-heading">Is Active</h5>
+                    <h5 class="list-group-item-heading">Contest Template Id</h5>
+                    <div class="list-group-item-text">{{ $model->contest_template_id ?? 'None' }}</div>
+                </li>
+                <li class="list-group-item">
+                    <h5 class="list-group-item-heading">Is Confirmed</h5>
                     <p class="list-group-item-text">
-                        @if ($model->is_active)
-                            <div class="mb-2 mr-2 badge badge-success">Active</div>
+                        @if ($model->isConfirmed())
+                            <div class="mb-2 mr-2 badge badge-success">Confirmed</div>
                         @else
-                            <div class="mb-2 mr-2 badge badge-secondary">Inactive</div>
+                            <div class="mb-2 mr-2 badge badge-secondary">Unconfirmed</div>
                         @endif
                     </p>
                 </li>

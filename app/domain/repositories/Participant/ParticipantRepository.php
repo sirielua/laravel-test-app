@@ -5,7 +5,6 @@ namespace App\domain\repositories\Participant;
 use App\domain\entities\Participant\Participant;
 use App\domain\entities\Participant\Id;
 use App\domain\entities\Participant\Phone;
-use App\domain\entities\Contest\Id as ContestId;
 
 interface ParticipantRepository
 {

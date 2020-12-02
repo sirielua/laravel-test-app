@@ -14,6 +14,7 @@ use App\domain\service\Participant\ConfirmRegistration\exceptions\InvalidConfirm
 use Illuminate\Validation\ValidationException;
 
 use App\Models\Participant;
+use App\Models\Contest;
 
 class ParticipantController extends Controller
 {
@@ -33,6 +34,29 @@ class ParticipantController extends Controller
                 'referral_id' => $service->data->getReferralId(),
             ],
         ]);
+    }
+
+    /**
+     * Reset all registration data and start over
+     *
+     * @param RegistrationService $service
+     * @return type
+     */
+    public function registerAgain(RegistrationService $service)
+    {
+        $service->resetState();
+
+        return redirect(route('index'));
+    }
+
+    /**
+     * Public user stats page
+     */
+    public function referral($id, RegistrationService $service)
+    {
+        $service->referral($id);
+
+        return redirect(route('index'));
     }
 
     /**
@@ -75,8 +99,6 @@ class ParticipantController extends Controller
      */
     public function editNumber(RegistrationService $service)
     {
-        echo 'edit'; exit;
-
         $service->editNumber();
 
         return redirect(route('index'));
@@ -114,7 +136,7 @@ class ParticipantController extends Controller
      */
     public function messenger(RegistrationService $service)
     {
-        return view('participants.share', [
+        return view('participants.messenger', [
             'contest' => $service->getContest(),
             'participant' => $service->getParticipant(),
         ]);
@@ -126,16 +148,11 @@ class ParticipantController extends Controller
     public function user($id)
     {
         $participant = Participant::findOrFail($id);
+        $contest = Contest::findOrFail($participant->contest_template_id);
 
         return view('participants.user', [
             'participant' => $participant,
+            'contest' => $contest,
         ]);
-    }
-
-    public function registerAgain(RegistrationService $service)
-    {
-        $service->resetState();
-
-        return redirect(route('index'));
     }
 }

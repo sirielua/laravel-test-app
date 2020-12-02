@@ -14,7 +14,7 @@ class ParticipantDataTable extends AdminDataTable
 
     protected $actionsColName = 'actions';
 
-    protected $defaultOrder = [4, 'asc'];
+    protected $defaultOrder = [5, 'desc'];
 
     protected $pageLength = 25;
 
@@ -92,7 +92,7 @@ class ParticipantDataTable extends AdminDataTable
     {
         return [
             $this->defineCheckboxCol(),
-//            Column::make('id')->search('id'),
+            Column::make('id')->search('id'),
             Column::make('first_name')->search('first_name'),
             Column::make('last_name')->search('last_name'),
             Column::make('phone')->search('phone'),
