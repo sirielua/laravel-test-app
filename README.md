@@ -9,25 +9,25 @@
 
 ## Testing
 
-$ php artisan test --testsuite=Domain --stop-on-failure
-$ php artisan test --testsuite=Unit --stop-on-failure
-$ php artisan test --testsuite=Feature --stop-on-failure
+- $ php artisan test --testsuite=Domain --stop-on-failure
+- $ php artisan test --testsuite=Unit --stop-on-failure
+- $ php artisan test --testsuite=Feature --stop-on-failure
 
 ## Compiling Assets
 
 Run all Mix tasks:
 
-$ cd Modules/Admin/
-$ npm run dev
-$ cd ../../
-$ npm run dev
+- $ cd Modules/Admin/
+- $ npm run dev
+- $ cd ../../
+- $ npm run dev
 
 Run all Mix tasks and minify output:
 
-$ cd Modules/Admin/
-$ npm run production
-$ cd ../../
-$ npm run production
+- $ cd Modules/Admin/
+- $ npm run production
+- $ cd ../../
+- $ npm run production
 
 ## About Laravel
 

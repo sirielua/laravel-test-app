@@ -4,7 +4,7 @@ namespace App\Services\Participant\RegistrationData;
 
 use App\Services\Participant\RegistrationData;
 
-class SimpleRegistrationData implements RegistrationData
+class MemoryRegistrationData implements RegistrationData
 {
     private $stage;
 
@@ -20,9 +20,8 @@ class SimpleRegistrationData implements RegistrationData
         $validStages = [
             RegistrationData::STAGE_REGISTER,
             RegistrationData::STAGE_VERIFICATION,
-            RegistrationData::STAGE_CONFIRMED,
             RegistrationData::STAGE_SHARE,
-            RegistrationData::STAGE_MESSANGER,
+            RegistrationData::STAGE_MESSENGER,
         ];
 
         if (!in_array($value, $validStages)) {
