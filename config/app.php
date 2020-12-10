@@ -172,8 +172,9 @@ return [
          * Application Service Providers...
          */
         App\Providers\SchemaServiceProvider::class,
-        App\Providers\DomainServiceProvider::class,
         App\Providers\AppServiceProvider::class,
+        App\Providers\GoogleApiProvider::class,
+        App\Providers\DomainServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,

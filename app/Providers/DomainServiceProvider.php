@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 // Components
 use App\domain\dispatchers\EventDispatcher;
 use App\domain\dispatchers\DummyEventDispatcher;
-use App\Components\ParticipantEventDispatcher;
 use App\domain\repositories\Hydrator;
 
 use App\domain\components\ConfirmationCodeGenerator\ConfirmationCodeGenerator;
@@ -33,6 +32,7 @@ use App\domain\service\Contest\Remove\RemoveHandler as ContestRemoveHandler;
 use App\domain\service\Contest\Update\UpdateHandler as ContestUpdateHandler;
 
 //Participant Services
+use App\Components\ParticipantEventDispatcher;
 use App\domain\service\Participant\Register\RegisterHandler as ParticipantRegisterHandler;
 use App\domain\service\Participant\SendConfirmation\SendConfirmationHandler as ParticipantSendConfirmationHandler;
 use App\domain\service\Participant\Remove\RemoveHandler as ParticipantRemoveHandler;
@@ -67,10 +67,6 @@ class DomainServiceProvider extends ServiceProvider
     {
         $this->app->singleton(EventDispatcher::class, function ($app) {
             return new DummyEventDispatcher();
-        });
-
-        $this->app->singleton(ParticipantEventDispatcher::class, function ($app) {
-            return new ParticipantEventDispatcher($app->make(ParticipantRepository::class));
         });
 
         $this->app->singleton(Hydrator::class, function ($app) {

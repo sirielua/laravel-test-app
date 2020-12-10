@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 
 use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\CheckParticipantRegistrationState;
+use App\Http\Middleware\FacebookWebhookMiddleware;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -26,6 +28,10 @@ Auth::routes([
     'verify' => false,
 ]);
 
+// Participant
+Route::get('/user/{user}', 'ParticipantController@user')->name('participants.user');
+Route::get('/user-tracking/{user}', 'ParticipantController@referral')->name('participants.referral');
+
 Route::middleware([CheckParticipantRegistrationState::class])->group(function() {
     Route::get('/', 'ParticipantController@landing')->name('index');
     Route::post('/register', 'ParticipantController@register')->name('participants.register');
@@ -37,8 +43,11 @@ Route::middleware([CheckParticipantRegistrationState::class])->group(function() 
     Route::get('/messenger', 'ParticipantController@messenger')->name('participants.messenger');
 });
 
-Route::get('/user/{user}', 'ParticipantController@user')->name('participants.user');
-Route::get('/user-tracking/{user}', 'ParticipantController@referral')->name('participants.referral');
 Route::delete('/reset', 'ParticipantController@registerAgain')->name('participants.reset');
 
+// Facebook
+Route::get('/messenger-webhook', 'FacebookWebhook@verify')->middleware([FacebookWebhookMiddleware::class]);
+Route::post('/messenger-webhook', 'FacebookWebhook@index')->middleware([FacebookWebhookMiddleware::class]);
+
+// Fallback
 Route::fallback('FallbackController@index');

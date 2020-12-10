@@ -15,6 +15,7 @@ class LinkFacebookCommand
     public function __construct(string $id, string $facebookId)
     {
         Assertion::notEmpty($id);
+        Assertion::notEmpty($facebookId);
 
         $this->id = $id;
         $this->facebookId = $facebookId;
