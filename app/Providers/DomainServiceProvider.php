@@ -8,13 +8,15 @@ use Illuminate\Http\Request;
 
 // Components
 use App\domain\dispatchers\EventDispatcher;
-use App\domain\dispatchers\DummyEventDispatcher;
 use App\domain\repositories\Hydrator;
+use App\Components\LaravelForwarderEventDispatcher;
 
 use App\domain\components\ConfirmationCodeGenerator\ConfirmationCodeGenerator;
 use App\domain\components\ConfirmationCodeGenerator\NumberConfirmationCodeGenerator;
 use App\domain\components\RegistrationNotifier\RegistrationNotifier;
 use App\Components\SessionRegistrationNotifier;
+use App\Components\SmsRegistrationNotifier;
+use App\Components\Sms\SmsApi;
 
 // Repositories
 use App\domain\repositories\Contest\ContestRepository;
@@ -32,7 +34,6 @@ use App\domain\service\Contest\Remove\RemoveHandler as ContestRemoveHandler;
 use App\domain\service\Contest\Update\UpdateHandler as ContestUpdateHandler;
 
 //Participant Services
-use App\Components\ParticipantEventDispatcher;
 use App\domain\service\Participant\Register\RegisterHandler as ParticipantRegisterHandler;
 use App\domain\service\Participant\SendConfirmation\SendConfirmationHandler as ParticipantSendConfirmationHandler;
 use App\domain\service\Participant\Remove\RemoveHandler as ParticipantRemoveHandler;
@@ -53,20 +54,10 @@ class DomainServiceProvider extends ServiceProvider
         $this->registerServices();
     }
 
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-
-    }
-
     private function registerComponents()
     {
         $this->app->singleton(EventDispatcher::class, function ($app) {
-            return new DummyEventDispatcher();
+            return new LaravelForwarderEventDispatcher();
         });
 
         $this->app->singleton(Hydrator::class, function ($app) {
@@ -79,6 +70,7 @@ class DomainServiceProvider extends ServiceProvider
 
         $this->app->singleton(RegistrationNotifier::class, function ($app) {
             return new SessionRegistrationNotifier($app->make(Request::class));
+//            return new SmsRegistrationNotifier($app->make(SmsApi::class));
         });
     }
 
@@ -128,7 +120,7 @@ class DomainServiceProvider extends ServiceProvider
             return new ParticipantRegisterHandler(
                 $app->make(ConfirmationCodeGenerator::class),
                 $app->make(ParticipantRepository::class),
-                $app->make(ParticipantEventDispatcher::class),
+                $app->make(EventDispatcher::class),
             );
         });
 
@@ -136,28 +128,28 @@ class DomainServiceProvider extends ServiceProvider
             return new ParticipantSendConfirmationHandler(
                 $app->make(RegistrationNotifier::class),
                 $app->make(ParticipantRepository::class),
-                $app->make(ParticipantEventDispatcher::class),
+                $app->make(EventDispatcher::class),
             );
         });
 
         $this->app->bind(ParticipantRemoveHandler::class, function ($app) {
             return new ParticipantRemoveHandler(
                 $app->make(ParticipantRepository::class),
-                $app->make(ParticipantEventDispatcher::class),
+                $app->make(EventDispatcher::class),
             );
         });
 
         $this->app->bind(ParticipantConfirmRegistrationHandler::class, function ($app) {
             return new ParticipantConfirmRegistrationHandler(
                 $app->make(ParticipantRepository::class),
-                $app->make(ParticipantEventDispatcher::class),
+                $app->make(EventDispatcher::class),
             );
         });
 
         $this->app->bind(ParticipantUpdateReferralQuantityHandler::class, function ($app) {
             return new ParticipantUpdateReferralQuantityHandler(
                 $app->make(ParticipantRepository::class),
-                $app->make(ParticipantEventDispatcher::class),
+                $app->make(EventDispatcher::class),
             );
         });
     }

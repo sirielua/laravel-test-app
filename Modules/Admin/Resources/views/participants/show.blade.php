@@ -46,6 +46,10 @@
                     <div class="list-group-item-text">{{ $model->referral_id ?? 'None' }}</div>
                 </li>
                 <li class="list-group-item">
+                    <h5 class="list-group-item-heading">Referral Quantity</h5>
+                    <div class="list-group-item-text">{{ $model->referral_quantity }}</div>
+                </li>
+                <li class="list-group-item">
                     <h5 class="list-group-item-heading">Contest Template Id</h5>
                     <div class="list-group-item-text">{{ $model->contest_template_id ?? 'None' }}</div>
                 </li>

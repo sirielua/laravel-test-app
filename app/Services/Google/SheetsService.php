@@ -24,20 +24,19 @@ class SheetsService
         $index = $this->api->search($this->spreadsheetId, $participant->id);
 
         if ($index === false) {
-            $response = $this->api->add($this->spreadsheetId, $data);
+            $this->api->add($this->spreadsheetId, $data);
         } else {
-            $response = $this->api->update($this->spreadsheetId, $data, $index);
+            $this->api->update($this->spreadsheetId, $data, $index);
         }
     }
 
-    private function formatParticipantAsRow(Participant $participant)
+    public function removeParticipant($id)
     {
-        return [
-            $participant->id,
-            $participant->phone,
-            $participant->first_name . ' ' . $participant->last_name,
-            $participant->referral_quantity,
-        ];
+        $index = $this->api->search($this->spreadsheetId, $id);
+        
+        if ($index !== false) {
+            $this->api->clear($this->spreadsheetId, $index);
+        }
     }
 
     public function exportParticipants()
@@ -52,5 +51,15 @@ class SheetsService
 
             $this->api->add($this->spreadsheetId, $data);
         });
+    }
+
+    private function formatParticipantAsRow(Participant $participant)
+    {
+        return [
+            $participant->id,
+            $participant->phone,
+            $participant->first_name . ' ' . $participant->last_name,
+            $participant->referral_quantity,
+        ];
     }
 }

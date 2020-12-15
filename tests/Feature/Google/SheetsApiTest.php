@@ -15,20 +15,23 @@ class SheetsApiTest extends TestCase
     private const EXISTING_ID = 'test-id';
     private const NON_EXISTING_ID = 'fail-id';
 
-    public static function setUpBeforeClass(): void
+    public function setUp(): void
     {
-        $credentials = base_path(env('GOOGLE_API_CREDENTIALS', 'google-credentials.json'));
-        putenv('GOOGLE_APPLICATION_CREDENTIALS=' . $credentials);
+        parent::setUp();
 
-        $client = new Client();
-        $client->useApplicationDefaultCredentials();
-        $client->setScopes(\Google_Service_Sheets::SPREADSHEETS);
-        $service = new \Google_Service_Sheets($client);
+        if (self::$api === null) {
+            $credentials = base_path(env('GOOGLE_API_CREDENTIALS', 'google-credentials.json'));
+            putenv('GOOGLE_APPLICATION_CREDENTIALS=' . $credentials);
 
-        self::$api = new SheetsApi($service);
-        self::$spreadsheetId = env('GOOGLE_API_TEST_SPREADSHEET_ID');
+            $client = new Client();
+            $client->useApplicationDefaultCredentials();
+            $client->setScopes(\Google_Service_Sheets::SPREADSHEETS);
+            $service = new \Google_Service_Sheets($client);
 
-        self::$api->clearSheet(self::$spreadsheetId);
+            self::$api = new SheetsApi($service);
+            self::$spreadsheetId = env('GOOGLE_API_TEST_SPREADSHEET_ID');
+            self::$api->clearSheet(self::$spreadsheetId);
+        }
     }
 
     public function testAdd()
@@ -75,6 +78,23 @@ class SheetsApiTest extends TestCase
     /**
      * @depends testUpdate
      */
+    public function testRemove()
+    {
+        self::$api->add(self::$spreadsheetId, [[\uniqid(), \uniqid()]]);
+
+        $index = self::$api->search(self::$spreadsheetId, self::EXISTING_ID);
+        $response = self::$api->clear(self::$spreadsheetId, $index);
+
+        $found = self::$api->search(self::$spreadsheetId, self::EXISTING_ID);
+
+        $this->assertInstanceOf(\Google_Service_Sheets_ClearValuesResponse::class, $response);
+        $this->assertFalse($found);
+        $this->assertTrue($found === false);
+    }
+
+    /**
+     * @depends testUpdate
+     */
     public function testClear()
     {
         self::$api->clearSheet(self::$spreadsheetId);
@@ -90,10 +110,10 @@ class SheetsApiTest extends TestCase
      */
     public function testSearchEmptyList()
     {
-        $result = self::$api->search(self::$spreadsheetId, self::EXISTING_ID);
+        $found = self::$api->search(self::$spreadsheetId, self::EXISTING_ID);
 
-        $this->assertFalse($result);
-        $this->assertTrue($result === false);
+        $this->assertFalse($found);
+        $this->assertTrue($found === false);
     }
 
     /**

@@ -3,13 +3,23 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Event;
 
 use Google\Client;
 use Google_Service_Sheets;
 use App\Services\Google\SheetsService;
 use App\Components\Google\SheetsApi;
 
-class GoogleApiProvider extends ServiceProvider
+use App\Events\Participant\RegistrationConfirmed;
+use App\Listeners\Participant\GoogleSheetsExport;
+
+use App\Events\Participant\ReferralQuantityChanged;
+use App\Listeners\Participant\GoogleSheetsUpdate;
+
+use App\Events\Participant\Removed;
+use App\Listeners\Participant\GoogleSheetsRemove;
+
+class GoogleServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
@@ -45,6 +55,16 @@ class GoogleApiProvider extends ServiceProvider
      */
     public function boot()
     {
+        Event::listen(
+            RegistrationConfirmed::class, [GoogleSheetsExport::class, 'handle']
+        );
 
+        Event::listen(
+            ReferralQuantityChanged::class, [GoogleSheetsUpdate::class, 'handle']
+        );
+
+        Event::listen(
+            Removed::class, [GoogleSheetsRemove::class, 'handle']
+        );
     }
 }

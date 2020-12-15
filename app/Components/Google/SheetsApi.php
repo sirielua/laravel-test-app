@@ -51,14 +51,21 @@ class SheetsApi
         return $this->service->spreadsheets_values->update($spreadsheetId, $range, $body, $params);
     }
 
+    public function clear($spreadsheetId, $index)
+    {
+        $range = 'A'.($index+1).':'.($index+1);
+
+        return $this->service->spreadsheets_values->clear($spreadsheetId, $range, new \Google_Service_Sheets_ClearValuesRequest());
+    }
+
     public function clearSheet($spreadsheetId)
     {
-        $request = $this->getClearRequest();
+        $request = $this->getClearSheetRequest();
 
         return $this->service->spreadsheets->batchUpdate($spreadsheetId, $request);
     }
 
-    private function getClearRequest()
+    private function getClearSheetRequest()
     {
         $requests = [
             new \Google_Service_Sheets_Request([
