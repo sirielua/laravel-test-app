@@ -11,10 +11,8 @@
                 <div class="card-header">Step 2 of 3</div>
 
                 <div class="card-body">
-                    <h1 class="card-title">An SMS with a confirmation code has been sent to your phone number</h1>
-                    <h5 class="card-title">Please enter the code from SMS below:</h5>
-
-                    @include('participants.verify._form', ['route' => route('participants.confirm'), 'method' => 'PATCH'])
+                    <h1 class="card-title">An SMS with a confirmation link has been sent to your phone number</h1>
+                    <h5 class="card-title">Please click the link from SMS</h5>
 
                     <hr />
 

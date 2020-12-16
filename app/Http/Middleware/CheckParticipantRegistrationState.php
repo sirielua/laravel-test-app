@@ -51,7 +51,7 @@ class CheckParticipantRegistrationState
             'participants.verify' => [RegistrationData::STAGE_VERIFICATION],
             'participants.resend-verification' => [RegistrationData::STAGE_VERIFICATION],
             'participants.edit-number' => [RegistrationData::STAGE_VERIFICATION],
-            'participants.confirm' => [RegistrationData::STAGE_VERIFICATION],
+            'participants.confirm-code' => [RegistrationData::STAGE_VERIFICATION],
             'participants.share' => [RegistrationData::STAGE_SHARE, RegistrationData::STAGE_MESSENGER],
             'participants.messenger' => [RegistrationData::STAGE_SHARE, RegistrationData::STAGE_MESSENGER],
         ];

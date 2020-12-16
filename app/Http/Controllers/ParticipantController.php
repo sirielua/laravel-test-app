@@ -9,6 +9,7 @@ use App\Services\Participant\RegistrationService;
 use App\Http\Requests\RegisterParticipantRequest;
 use App\Http\Requests\ConfirmParticipantRegistrationRequest;
 
+use App\domain\service\Participant\Register\exceptions\PhoneAlreadyRegisteredException;
 use App\domain\service\Participant\SendConfirmation\exceptions\CantSendMoreConfirmationsException;
 use App\domain\service\Participant\ConfirmRegistration\exceptions\InvalidConfirmationCodeException;
 use Illuminate\Validation\ValidationException;
@@ -64,7 +65,11 @@ class ParticipantController extends Controller
      */
     public function register(RegisterParticipantRequest $request, RegistrationService $service)
     {
-        $service->register($request->validated());
+        try {
+            $service->register($request->validated());
+        } catch (PhoneAlreadyRegisteredException $e) {
+            return redirect(route('index'));
+        }
 
         return redirect(route('participants.verify'));
     }
@@ -74,7 +79,9 @@ class ParticipantController extends Controller
      */
     public function verify(RegistrationService $service)
     {
-        return view('participants.verify', [
+        $view = 'participants.verify-link'; // 'participants.verify-code' | 'participants.verify-link'
+
+        return view($view, [
             'contest' => $service->getContest(),
             'participant' => $service->getParticipant(),
         ]);
@@ -107,14 +114,28 @@ class ParticipantController extends Controller
     /**
      * Confirm verification
      */
-    public function confirm(ConfirmParticipantRegistrationRequest $request, RegistrationService $service)
+    public function confirmWithCode(ConfirmParticipantRegistrationRequest $request, RegistrationService $service)
     {
         try {
-            $service->confirm($request->get('code'));
+            $service->confirmWithCode($request->get('code'));
         } catch (InvalidConfirmationCodeException $e) {
             throw ValidationException::withMessages([
                 'code' => ['Invalid confirmation code'],
             ]);
+        }
+
+        return redirect(route('participants.share'));
+    }
+
+    /**
+     * Confirm verification
+     */
+    public function confirmWithLink($id, $code, RegistrationService $service)
+    {
+        try {
+            $service->confirmWithLink($id, $code);
+        } catch (\Exception $e) {
+            abort(403, 'Invalid confirmation code');
         }
 
         return redirect(route('participants.share'));

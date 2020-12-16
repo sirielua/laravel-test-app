@@ -12,11 +12,14 @@ use App\domain\repositories\Hydrator;
 use App\Components\LaravelForwarderEventDispatcher;
 
 use App\domain\components\ConfirmationCodeGenerator\ConfirmationCodeGenerator;
-use App\domain\components\ConfirmationCodeGenerator\NumberConfirmationCodeGenerator;
+//use App\domain\components\ConfirmationCodeGenerator\NumberConfirmationCodeGenerator;
+use App\domain\components\ConfirmationCodeGenerator\HashConfirmationCodeGenerator;
 use App\domain\components\RegistrationNotifier\RegistrationNotifier;
-use App\Components\SessionRegistrationNotifier;
-use App\Components\SmsRegistrationNotifier;
-use App\Components\Sms\SmsApi;
+use App\Components\Registration\RegistrationConfirmationMessageGenerator;
+use App\Components\Registration\RegistrationLinkConfirmationMessageGenerator;
+//use App\Components\Registration\RegistrationCodeConfirmationMessageGenerator;
+use App\Components\Registration\SessionRegistrationNotifier;
+use App\Components\Registration\SmsRegistrationNotifier;
 
 // Repositories
 use App\domain\repositories\Contest\ContestRepository;
@@ -64,13 +67,25 @@ class DomainServiceProvider extends ServiceProvider
             return new Hydrator();
         });
 
+        $this->app->singleton(RegistrationConfirmationMessageGenerator::class, function ($app) {
+            return new RegistrationLinkConfirmationMessageGenerator();
+        });
+
         $this->app->singleton(ConfirmationCodeGenerator::class, function ($app) {
-            return new NumberConfirmationCodeGenerator($length = 4);
+            return new HashConfirmationCodeGenerator();
+//            return new NumberConfirmationCodeGenerator($length = 4);
         });
 
         $this->app->singleton(RegistrationNotifier::class, function ($app) {
-            return new SessionRegistrationNotifier($app->make(Request::class));
-//            return new SmsRegistrationNotifier($app->make(SmsApi::class));
+            return new SessionRegistrationNotifier(
+                $app->make(RegistrationConfirmationMessageGenerator::class),
+                $app->make(Request::class)
+            );
+
+//            return new SmsRegistrationNotifier(
+//                $app->make(RegistrationConfirmationMessageGenerator::class),
+//                $app->make(SmsApi::class)
+//            );
         });
     }
 

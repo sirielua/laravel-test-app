@@ -18,6 +18,9 @@ use App\domain\service\Participant\Remove\RemoveHandler;
 use App\domain\service\Participant\ConfirmRegistration\ConfirmRegistrationCommand;
 use App\domain\service\Participant\ConfirmRegistration\ConfirmRegistrationHandler;
 use App\domain\service\Participant\ConfirmRegistration\exceptions\RegistrationAlreadyConfirmedException;
+use App\domain\service\Participant\ConfirmRegistration\exceptions\InvalidConfirmationCodeException;
+
+use App\domain\repositories\NotFoundException;
 
 class RegistrationService
 {
@@ -164,7 +167,7 @@ class RegistrationService
         $this->participant = null;
     }
 
-    public function confirm($code)
+    public function confirmWithCode($code)
     {
         $command = new ConfirmRegistrationCommand($this->data->getId(), $code);
         $handler = app()->make(ConfirmRegistrationHandler::class);
@@ -174,6 +177,50 @@ class RegistrationService
             $this->data->setStage(RegistrationData::STAGE_SHARE);
         } catch (RegistrationAlreadyConfirmedException $e) {
             $this->data->setStage(RegistrationData::STAGE_SHARE);
+        }
+    }
+
+    /**
+     *
+     * @param string $id
+     * @param string $code
+     * @throws NotFoundException
+     * @throws RegistrationAlreadyConfirmedException
+     * @throws InvalidConfirmationCodeException
+     */
+    public function confirmWithLink($id, $code)
+    {
+        $command = new ConfirmRegistrationCommand($id, $code);
+        $handler = app()->make(ConfirmRegistrationHandler::class);
+
+        $handler->handle($command);
+
+        $this->regenerateState($id);
+    }
+
+    /**
+     *
+     * @param type $id
+     * @throws NotFoundException
+     */
+    private function regenerateState($id)
+    {
+        $this->resetState();
+
+        try {
+            $participant = Participant::find($id);
+            $stage = $participant->isConfirmed() ?
+                RegistrationData::STAGE_SHARE : RegistrationData::STAGE_VERIFICATION;
+
+            $this->data->setStage($stage);
+            $this->data->setId($participant->id);
+            $this->data->setContestId($participant->contest_id);
+            $this->data->setFirstName($participant->first_name);
+            $this->data->setLastName($participant->last_name);
+            $this->data->setPhone($participant->phone);
+            $this->data->setReferralId($participant->referral_id);
+        } catch (NotFoundException $e) {
+            $this->data->setStage(RegistrationData::STAGE_REGISTER);
         }
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Components;
+namespace App\Components\Registration;
 
 use App\domain\components\RegistrationNotifier\RegistrationNotifier;
 use Illuminate\Http\Request;
@@ -8,9 +8,12 @@ use App\domain\entities\Participant\Participant;
 
 class SessionRegistrationNotifier implements RegistrationNotifier
 {
+    private $messageGen;
     private $request;
 
-    public function __construct(Request $request) {
+    public function __construct(RegistrationConfirmationMessageGenerator $messageGen, Request $request)
+    {
+        $this->messageGen = $messageGen;
         $this->request = $request;
     }
 
@@ -19,8 +22,6 @@ class SessionRegistrationNotifier implements RegistrationNotifier
      */
     public function notify(Participant $participant): void
     {
-        $code = $participant->getRegistrationData()->getConfirmationCode();
-
-        $this->request->session()->flash('status', 'Your confirmation code is: '. $code);
+        $this->request->session()->flash('status', $this->messageGen->generate($participant));
     }
 }
