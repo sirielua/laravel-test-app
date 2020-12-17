@@ -2,6 +2,8 @@
     <div class="app-footer">
         <div class="app-footer__inner">
             <div class="app-footer-left">
+                <p>This view is rendered in module: {!! config('admin.name') !!}</p>
+
                 {{--
                 <ul class="nav">
                     <li class="nav-item">

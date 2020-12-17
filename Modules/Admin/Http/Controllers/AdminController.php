@@ -15,6 +15,6 @@ class AdminController extends Controller
      */
     public function index(UserDataTable $dataTable)
     {
-        return view('admin::index', ['dataTable' => $dataTable->html()]);
+        return view('admin::admin.index', ['dataTable' => $dataTable->html()]);
     }
 }

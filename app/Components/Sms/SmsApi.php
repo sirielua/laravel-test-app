@@ -2,6 +2,9 @@
 
 namespace App\Components\Sms;
 
+use App\Components\Sms\Result\Result;
+use App\Components\Sms\Balance\Balance;
+
 class SmsApi
 {
     private $factory;
@@ -11,13 +14,13 @@ class SmsApi
         $this->factory = $factory;
     }
 
-    public function send($to, $message)
+    public function send($to, $message): Result
     {
         $sender = $this->factory->getSender();
         return $sender->send($to, $message);
     }
 
-    public function getBalance()
+    public function getBalance(): Balance
     {
         $balanceChecker = $this->factory->getBalanceChecker();
         return $balanceChecker->getBalance();

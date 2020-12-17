@@ -13,4 +13,3 @@ interface Sender
      */
     public function send($to, $message): Result;
 }
-

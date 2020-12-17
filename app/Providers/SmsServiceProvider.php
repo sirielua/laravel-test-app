@@ -30,9 +30,6 @@ class SmsServiceProvider extends ServiceProvider
         });
 
         $this->app->singleton(SmsApi::class, function ($app) {
-            $client = new Client();
-            $client->useApplicationDefaultCredentials();
-            $client->setScopes(\Google_Service_Sheets::SPREADSHEETS);
             return new SmsApi($app->make(SmsApiFactory::class));
         });
     }

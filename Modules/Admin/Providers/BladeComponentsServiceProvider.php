@@ -12,6 +12,7 @@ class BladeComponentsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Blade::componentNamespace('Modules\\Admin\\View\\Components', 'admin');
         Blade::componentNamespace('Modules\\Admin\\View\\Components\\Architect', 'architect');
     }
 }

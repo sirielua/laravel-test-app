@@ -21,7 +21,7 @@ class LoginController extends Controller
     */
 
     //use AuthenticatesUsers;
-    
+
     use AuthenticatesUsers {
         logout as doLogout;
     }
@@ -42,7 +42,7 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
-    
+
     /**
      * Show the application's login form.
      *
@@ -52,11 +52,27 @@ class LoginController extends Controller
     {
         return view('admin::auth.login');
     }
-    
+
     public function logout(Request $request)
     {
         $this->doLogout($request);
-        
+
         return redirect()->route('admin::login');
+    }
+
+    /**
+     * Get the needed authorization credentials from the request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    protected function credentials(Request $request)
+    {
+        return array_merge(
+            $request->only($this->username(), 'password'),
+            [
+                'is_active' => true
+            ]
+        );
     }
 }
